@@ -13,6 +13,8 @@ import {
   Shield,
   BarChart3,
   FileText,
+  Minus,
+  Plus,
 } from "lucide-react";
 import {
   LineChart,
