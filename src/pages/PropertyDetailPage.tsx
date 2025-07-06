@@ -897,7 +897,15 @@ export const PropertyDetailPage: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
                     Tokens
                   </label>
-                  <div className="relative">
+                  <div className="relative flex items-center space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setTokenInput(Math.max(minTokens, sanitizedTokenInput - 1))}
+                      disabled={sanitizedTokenInput <= minTokens}
+                      className="p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
                     <input
                       type="number"
                       min={minTokens}
@@ -908,12 +916,38 @@ export const PropertyDetailPage: React.FC = () => {
                         const val = Math.floor(Number(e.target.value));
                         setTokenInput(isNaN(val) ? minTokens : val);
                       }}
-                      className="w-full pr-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent transition-all duration-300"
+                      className="flex-1 px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 dark:text-white text-center text-lg font-light focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent transition-all duration-300"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setTokenInput(Math.min(maxTokens, sanitizedTokenInput + 1))}
+                      disabled={sanitizedTokenInput >= maxTokens}
+                      className="p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     Enter the number of tokens (1 - {maxTokens})
                   </p>
+                  
+                  {/* Quick Selection Buttons */}
+                  <div className="grid grid-cols-4 gap-2 mt-3">
+                    {[1, 10, 100, 1000].map((qty) => (
+                      <button
+                        key={qty}
+                        type="button"
+                        onClick={() => setTokenInput(Math.min(maxTokens, qty))}
+                        className={`py-2 px-3 text-sm rounded-lg transition-all duration-300 ${
+                          sanitizedTokenInput === qty
+                            ? 'bg-black dark:bg-white text-white dark:text-black'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        }`}
+                      >
+                        {qty}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
