@@ -438,6 +438,28 @@ export const PropertyDetailPage: React.FC = () => {
     return Math.round((raised / target) * 100);
   };
 
+  // Calculate property value and annual yield based on property status
+  let displayPropertyValue = 0;
+  let displayAnnualYield = 0;
+  if (property.status === "funding") {
+    displayPropertyValue = property.price;
+    displayAnnualYield = property.yield;
+  } else {
+    // Trading: use calculated values
+    const currentTokenValue = property
+      ? bestBid !== null
+        ? bestBid
+        : property.currentTokenValue || 0
+      : 0;
+    displayPropertyValue = property
+      ? currentTokenValue * property.totalTokens
+      : 0;
+    displayAnnualYield =
+      displayPropertyValue > 0 && property
+        ? ((property.monthlyRent * 12) / displayPropertyValue) * 100
+        : 0;
+  }
+
   // --- Investment Calculator helpers ---
   // Determine which price to use for token calculation
   let tokenPriceSource = "";
@@ -457,13 +479,9 @@ export const PropertyDetailPage: React.FC = () => {
       tokenPriceSource = "Original token price";
     }
   } else {
-    if (typeof lastTradePrice === "number" && !isNaN(lastTradePrice)) {
-      tokenPrice = lastTradePrice;
-      tokenPriceSource = "Last traded price";
-    } else {
-      tokenPrice = property.price / property.totalTokens;
-      tokenPriceSource = "Original token price";
-    }
+    // Funding: always use original token price
+    tokenPrice = property.price / property.totalTokens;
+    tokenPriceSource = "Original token price";
   }
 
   // --- New Investment Calculator State ---
@@ -680,7 +698,7 @@ export const PropertyDetailPage: React.FC = () => {
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <p className="text-3xl font-light text-gray-900 dark:text-gray-100 mb-2">
-                    {formatPrice(propertyMarketValue)}
+                    {formatPrice(displayPropertyValue)}
                   </p>
                   <p className="text-gray-600 dark:text-gray-400">
                     Property Value
@@ -688,7 +706,7 @@ export const PropertyDetailPage: React.FC = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-2xl font-light text-green-600 dark:text-green-400 mb-2">
-                    {calculatedAnnualYield.toFixed(1)}%
+                    {displayAnnualYield.toFixed(1)}%
                   </p>
                   <p className="text-gray-600 dark:text-gray-400">
                     Annual Yield
@@ -902,7 +920,11 @@ export const PropertyDetailPage: React.FC = () => {
                   <div className="relative flex items-center space-x-2">
                     <button
                       type="button"
-                      onClick={() => setTokenInput(Math.max(minTokens, sanitizedTokenInput - 1))}
+                      onClick={() =>
+                        setTokenInput(
+                          Math.max(minTokens, sanitizedTokenInput - 1)
+                        )
+                      }
                       disabled={sanitizedTokenInput <= minTokens}
                       className="p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
@@ -922,7 +944,11 @@ export const PropertyDetailPage: React.FC = () => {
                     />
                     <button
                       type="button"
-                      onClick={() => setTokenInput(Math.min(maxTokens, sanitizedTokenInput + 1))}
+                      onClick={() =>
+                        setTokenInput(
+                          Math.min(maxTokens, sanitizedTokenInput + 1)
+                        )
+                      }
                       disabled={sanitizedTokenInput >= maxTokens}
                       className="p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
@@ -932,7 +958,7 @@ export const PropertyDetailPage: React.FC = () => {
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     Enter the number of tokens (1 - {maxTokens})
                   </p>
-                  
+
                   {/* Quick Selection Buttons */}
                   <div className="grid grid-cols-4 gap-2 mt-3">
                     {[1, 10, 100, 1000].map((qty) => (
@@ -942,8 +968,8 @@ export const PropertyDetailPage: React.FC = () => {
                         onClick={() => setTokenInput(Math.min(maxTokens, qty))}
                         className={`py-2 px-3 text-sm rounded-lg transition-all duration-300 ${
                           sanitizedTokenInput === qty
-                            ? 'bg-black dark:bg-white text-white dark:text-black'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            ? "bg-black dark:bg-white text-white dark:text-black"
+                            : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600"
                         }`}
                       >
                         {qty}
