@@ -12,6 +12,7 @@ import { Nav } from "../components/Nav";
 import { getOrderBook } from "../services/marketApi";
 import { properties } from "../data/properties";
 import { BACKEND_URL } from "../config/environment";
+import { SignUpButton } from "@clerk/clerk-react";
 
 interface Property {
   id: string;
@@ -19,7 +20,9 @@ interface Property {
   location: string;
   price: number;
   description: string;
-  image: string;
+  fullDescription?: string;
+  image?: string;
+  images?: string[];
   bedrooms: number;
   bathrooms: number;
   sqm: number;
@@ -32,7 +35,13 @@ interface Property {
   targetCapital?: number;
   status: "funding" | "trading";
   currentTokenValue?: number;
-  monthlyRent?: number; // Added for trading properties
+  yearBuilt?: number;
+  monthlyRent?: number;
+  propertyTax?: number;
+  hoa?: number;
+  features?: string[];
+  neighborhood?: string;
+  walkScore?: number;
 }
 
 export const DemoPlatformPage: React.FC = () => {
@@ -127,13 +136,76 @@ export const DemoPlatformPage: React.FC = () => {
     navigate(`/demo-platform/${propertyId}`);
   };
 
-  const totalValue = properties.reduce((sum, prop) => sum + prop.price, 0);
+  // --- UPDATED PLATFORM STATS LOGIC ---
+  const getTradingValue = (property: Property) => {
+    const summary = marketSummaries[property.id];
+    const bestBid =
+      summary && typeof summary.bestBid === "number" && !isNaN(summary.bestBid)
+        ? summary.bestBid
+        : null;
+    const lastTrade =
+      summary &&
+      typeof summary.lastTrade === "number" &&
+      !isNaN(summary.lastTrade)
+        ? summary.lastTrade
+        : null;
+    if (typeof bestBid === "number") {
+      return bestBid * property.totalTokens;
+    } else if (typeof lastTrade === "number") {
+      return lastTrade * property.totalTokens;
+    } else {
+      return 0;
+    }
+  };
+
+  const getTradingYield = (property: Property) => {
+    const summary = marketSummaries[property.id];
+    const bestBid =
+      summary && typeof summary.bestBid === "number" && !isNaN(summary.bestBid)
+        ? summary.bestBid
+        : null;
+    const lastTrade =
+      summary &&
+      typeof summary.lastTrade === "number" &&
+      !isNaN(summary.lastTrade)
+        ? summary.lastTrade
+        : null;
+    const annualRent = property.monthlyRent ? property.monthlyRent * 12 : 0;
+    let yieldValue = 0;
+    if (bestBid && property.totalTokens) {
+      yieldValue = (annualRent / (bestBid * property.totalTokens)) * 100;
+    } else if (lastTrade && property.totalTokens) {
+      yieldValue = (annualRent / (lastTrade * property.totalTokens)) * 100;
+    }
+    return yieldValue;
+  };
+
+  // Calculate stats using dynamic values for trading properties
+  const totalValue = properties.reduce((sum, prop) => {
+    if (prop.status === "trading") {
+      return sum + getTradingValue(prop);
+    } else {
+      return sum + prop.price;
+    }
+  }, 0);
+
   const totalTokens = properties.reduce(
     (sum, prop) => sum + prop.totalTokens,
     0
   );
-  const avgYield =
-    properties.reduce((sum, prop) => sum + prop.yield, 0) / properties.length;
+
+  const avgYield = (() => {
+    if (properties.length === 0) return 0;
+    let total = 0;
+    properties.forEach((prop) => {
+      if (prop.status === "trading") {
+        total += getTradingYield(prop);
+      } else {
+        total += prop.yield;
+      }
+    });
+    return total / properties.length;
+  })();
 
   // Helper to prepend backend URL to image paths
   const getFullImageUrl = (path: string) =>
@@ -219,7 +291,7 @@ export const DemoPlatformPage: React.FC = () => {
                   src={
                     propertyImages[property.id]?.[0]
                       ? getFullImageUrl(propertyImages[property.id][0])
-                      : property.image
+                      : property.image || "/assets/default-property.jpg"
                   }
                   alt={property.name}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
@@ -426,7 +498,30 @@ export const DemoPlatformPage: React.FC = () => {
                       Min. Investment
                     </span>
                     <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                      €{property.minInvestment}
+                      {property.status === "trading"
+                        ? (() => {
+                            const summary = marketSummaries[property.id];
+                            const bestBid =
+                              summary &&
+                              typeof summary.bestBid === "number" &&
+                              !isNaN(summary.bestBid)
+                                ? summary.bestBid
+                                : null;
+                            const lastTrade =
+                              summary &&
+                              typeof summary.lastTrade === "number" &&
+                              !isNaN(summary.lastTrade)
+                                ? summary.lastTrade
+                                : null;
+                            if (typeof bestBid === "number") {
+                              return `€${bestBid.toFixed(2)}`;
+                            } else if (typeof lastTrade === "number") {
+                              return `Last Trade: €${lastTrade.toFixed(2)}`;
+                            } else {
+                              return "-";
+                            }
+                          })()
+                        : `€${property.minInvestment}`}
                     </span>
                   </div>
                 </div>
@@ -456,16 +551,15 @@ export const DemoPlatformPage: React.FC = () => {
             Join thousands of investors who are already building their real
             estate portfolio through tokenization
           </p>
-          <a
-            href="https://www.linkedin.com/company/tokeitreal/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-lg font-light
+          <SignUpButton mode="modal">
+            <button
+              className="inline-flex items-center bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-lg font-light
                      hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300
                      transform hover:scale-105 active:scale-95"
-          >
-            Get Started Today
-          </a>
+            >
+              Get Started Today
+            </button>
+          </SignUpButton>
         </div>
       </div>
     </div>
