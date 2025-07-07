@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.32.4",
     "@types/cors": "^2.8.17",
     "axios": "^1.8.4",
     "cors": "^2.8.5",

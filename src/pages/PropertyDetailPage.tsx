@@ -13,6 +13,8 @@ import {
   Shield,
   BarChart3,
   FileText,
+  Minus,
+  Plus,
 } from "lucide-react";
 import {
   LineChart,
@@ -39,6 +41,8 @@ import {
   subscribeToOrderBook,
 } from "../services/marketApi";
 import type { OrderRequest, OrderResponse } from "../services/marketApi";
+import { properties } from "../data/properties";
+import { BACKEND_URL } from "../config/environment";
 
 interface Property {
   id: string;
@@ -80,124 +84,13 @@ const tokenPriceHistory = [
   { month: "Dec", price: 42.8 },
 ];
 
-const propertyData: { [key: string]: Property } = {
-  "modern-family-apartment": {
-    id: "modern-family-apartment",
-    name: "Modern Family Apartment",
-    location: "Leipzig, Germany",
-    price: 320000,
-    description:
-      "78m² 3-bedroom apartment in residential area with modern amenities and excellent transport links.",
-    fullDescription:
-      "This modern 3-bedroom apartment in Leipzig offers comfortable family living with contemporary design and excellent connectivity. Located in a well-established residential area, the property features an open-plan living area, modern kitchen with integrated appliances, and three well-proportioned bedrooms. The apartment includes a private balcony, storage space, and access to a communal garden. With excellent public transport links and proximity to schools and shopping centers, this property represents an ideal investment opportunity in Germany's growing rental market.",
-    images: [
-      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=600&fit=crop",
-    ],
-    bedrooms: 3,
-    bathrooms: 1,
-    sqm: 78,
-    type: "Apartment",
-    yield: 4.8,
-    minInvestment: 1,
-    totalTokens: 32000,
-    status: "funding",
-    capitalRaised: 180000,
-    targetCapital: 320000,
-    yearBuilt: 2019,
-    monthlyRent: 1280,
-    propertyTax: 85,
-    hoa: 120,
-    features: [
-      "Modern Kitchen",
-      "Private Balcony",
-      "Storage Space",
-      "Communal Garden",
-      "Public Transport",
-      "Near Schools",
-    ],
-    neighborhood: "Reudnitz-Thonberg",
-    walkScore: 78,
-  },
-  "suburban-house": {
-    id: "suburban-house",
-    name: "Suburban House",
-    location: "Eindhoven, Netherlands",
-    price: 285000,
-    description:
-      "110m² family home with small garden, perfect for young families in a quiet neighborhood.",
-    fullDescription:
-      "This charming family home in Eindhoven provides the perfect blend of suburban tranquility and urban convenience. The 110m² property features a spacious living room with large windows, a modern kitchen, three comfortable bedrooms, and two bathrooms. The highlight is the private garden, ideal for families with children. Located in a quiet residential neighborhood with excellent schools nearby, this property offers strong rental demand from young professionals and families. The area benefits from Eindhoven's thriving tech industry and proximity to major employers.",
-    images: [
-      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800&h=600&fit=crop",
-    ],
-    bedrooms: 3,
-    bathrooms: 2,
-    sqm: 110,
-    type: "House",
-    yield: 5.2,
-    minInvestment: 1,
-    totalTokens: 28500,
-    status: "funding",
-    capitalRaised: 142500,
-    targetCapital: 285000,
-    yearBuilt: 2015,
-    monthlyRent: 1235,
-    propertyTax: 95,
-    hoa: 0,
-    features: [
-      "Private Garden",
-      "Modern Kitchen",
-      "Two Bathrooms",
-      "Quiet Neighborhood",
-      "Near Schools",
-      "Parking Space",
-    ],
-    neighborhood: "Woensel-Zuid",
-    walkScore: 72,
-  },
-  "city-apartment-building": {
-    id: "city-apartment-building",
-    name: "City Apartment Building",
-    location: "Porto, Portugal",
-    price: 240000,
-    description:
-      "65m² 2-bedroom apartment near city center with historic charm and modern renovations.",
-    fullDescription:
-      "This beautifully renovated 2-bedroom apartment in Porto combines historic Portuguese architecture with modern comfort. Located just minutes from the city center, the property features high ceilings, original architectural details, and contemporary finishes throughout. The apartment includes a bright living area, modern kitchen, two bedrooms, and a renovated bathroom. The building has been carefully restored while maintaining its historic character. With Porto's growing tourism industry and increasing demand for quality rental properties, this apartment offers excellent investment potential in one of Europe's most charming cities.",
-    images: [
-      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1449844908441-8829872d2607?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop",
-    ],
-    bedrooms: 2,
-    bathrooms: 1,
-    sqm: 65,
-    type: "Apartment",
-    yield: 4.1,
-    minInvestment: 1,
-    totalTokens: 1000,
-    status: "trading",
-    currentTokenValue: 42.8,
-    yearBuilt: 1920,
-    monthlyRent: 1220,
-    propertyTax: 45,
-    hoa: 35,
-    features: [
-      "Historic Building",
-      "High Ceilings",
-      "City Center",
-      "Modern Renovation",
-      "Original Details",
-      "Tourist Area",
-    ],
-    neighborhood: "Cedofeita",
-    walkScore: 92,
-  },
-};
+// Helper to get property by id
+const getPropertyById = (id: string | undefined) =>
+  properties.find((p) => p.id === id);
+
+// Helper to prepend backend URL to image paths
+const getFullImageUrl = (path: string) =>
+  path.startsWith("http") ? path : `${BACKEND_URL}${path}`;
 
 export const PropertyDetailPage: React.FC = () => {
   const { propertyId } = useParams<{ propertyId: string }>();
@@ -210,8 +103,15 @@ export const PropertyDetailPage: React.FC = () => {
   const [bestAsk, setBestAsk] = useState<number | null>(null);
   const [lastTradePrice, setLastTradePrice] = useState<number | null>(null);
   const [recentTrades, setRecentTrades] = useState<any[]>([]);
+  // State for market summary
+  const [marketSummary, setMarketSummary] = useState<{
+    bestBid: number | null;
+    lastTrade: number | null;
+  }>({ bestBid: null, lastTrade: null });
+  // Add state for dynamic images
+  const [dynamicImages, setDynamicImages] = useState<string[] | null>(null);
 
-  const property = propertyId ? propertyData[propertyId] : null;
+  const property = propertyId ? getPropertyById(propertyId) : null;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -312,6 +212,29 @@ export const PropertyDetailPage: React.FC = () => {
       if (unsubscribeTrades) unsubscribeTrades && unsubscribeTrades();
     };
   }, [property]);
+
+  // Fetch dynamic images from backend
+  useEffect(() => {
+    if (!propertyId) return;
+    fetch("/api/property-images")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data[propertyId]) {
+          setDynamicImages(data[propertyId]);
+        }
+      })
+      .catch(() => setDynamicImages(null));
+  }, [propertyId]);
+
+  useEffect(() => {
+    if (property?.status === "trading" && property.id) {
+      fetch(`/api/market/${property.id}/summary`)
+        .then((res) => res.json())
+        .then((data) =>
+          setMarketSummary({ bestBid: data.bestBid, lastTrade: data.lastTrade })
+        );
+    }
+  }, [property?.id, property?.status]);
 
   // Build token price history from recent trades, only the first trade of each quarter (for background bars)
   const chartDataFirstOfQuarter = React.useMemo(() => {
@@ -436,6 +359,28 @@ export const PropertyDetailPage: React.FC = () => {
     return Math.round((raised / target) * 100);
   };
 
+  // Calculate property value and annual yield based on property status
+  let displayPropertyValue = 0;
+  let displayAnnualYield = 0;
+  if (property.status === "funding") {
+    displayPropertyValue = property.price;
+    displayAnnualYield = property.yield;
+  } else {
+    // Trading: use calculated values
+    const currentTokenValue = property
+      ? bestBid !== null
+        ? bestBid
+        : property.currentTokenValue || 0
+      : 0;
+    displayPropertyValue = property
+      ? currentTokenValue * property.totalTokens
+      : 0;
+    displayAnnualYield =
+      displayPropertyValue > 0 && property && property.monthlyRent !== undefined
+        ? ((property.monthlyRent * 12) / displayPropertyValue) * 100
+        : 0;
+  }
+
   // --- Investment Calculator helpers ---
   // Determine which price to use for token calculation
   let tokenPriceSource = "";
@@ -455,13 +400,9 @@ export const PropertyDetailPage: React.FC = () => {
       tokenPriceSource = "Original token price";
     }
   } else {
-    if (typeof lastTradePrice === "number" && !isNaN(lastTradePrice)) {
-      tokenPrice = lastTradePrice;
-      tokenPriceSource = "Last traded price";
-    } else {
-      tokenPrice = property.price / property.totalTokens;
-      tokenPriceSource = "Original token price";
-    }
+    // Funding: always use original token price
+    tokenPrice = property.price / property.totalTokens;
+    tokenPriceSource = "Original token price";
   }
 
   // --- New Investment Calculator State ---
@@ -476,7 +417,7 @@ export const PropertyDetailPage: React.FC = () => {
 
   // Monthly return: (monthlyRent / totalTokens) * tokensToBuy
   const calculateMonthlyReturn = (tokensToBuy: number) => {
-    if (!property) return 0;
+    if (!property || property.monthlyRent === undefined) return 0;
     return (property.monthlyRent / property.totalTokens) * tokensToBuy;
   };
 
@@ -492,7 +433,7 @@ export const PropertyDetailPage: React.FC = () => {
 
   // Calculate annual yield as (monthlyRent * 12) / propertyMarketValue * 100
   const calculatedAnnualYield =
-    propertyMarketValue > 0 && property
+    propertyMarketValue > 0 && property && property.monthlyRent !== undefined
       ? ((property.monthlyRent * 12) / propertyMarketValue) * 100
       : 0;
 
@@ -544,47 +485,59 @@ export const PropertyDetailPage: React.FC = () => {
             {/* Image Gallery */}
             <div className="space-y-4">
               <div className="relative h-96 rounded-2xl overflow-hidden">
-                <img
-                  src={property.images[currentImageIndex]}
-                  alt={property.name}
-                  className="w-full h-full object-cover"
-                />
-                {property.images.length > 1 && (
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                    {property.images.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                          index === currentImageIndex
-                            ? "bg-white"
-                            : "bg-white/50 hover:bg-white/75"
-                        }`}
-                      />
-                    ))}
-                  </div>
+                {(dynamicImages ?? property?.images ?? []).length > 0 && (
+                  <>
+                    <img
+                      src={getFullImageUrl(
+                        (dynamicImages ?? property?.images ?? [])[
+                          currentImageIndex
+                        ]
+                      )}
+                      alt={property?.name}
+                      className="w-full h-full object-cover"
+                    />
+                    {(dynamicImages ?? property?.images ?? []).length > 1 && (
+                      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                        {(dynamicImages ?? property?.images ?? []).map(
+                          (_, index) => (
+                            <button
+                              key={index}
+                              onClick={() => setCurrentImageIndex(index)}
+                              className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+                                index === currentImageIndex
+                                  ? "bg-white"
+                                  : "bg-white/50 hover:bg-white/75"
+                              }`}
+                            />
+                          )
+                        )}
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
-              {property.images.length > 1 && (
+              {(dynamicImages ?? property?.images ?? []).length > 1 && (
                 <div className="grid grid-cols-3 gap-2">
-                  {property.images.map((image, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`relative h-24 rounded-lg overflow-hidden transition-all duration-300 ${
-                        index === currentImageIndex
-                          ? "ring-2 ring-black dark:ring-white"
-                          : "hover:opacity-75"
-                      }`}
-                    >
-                      <img
-                        src={image}
-                        alt={`${property.name} ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </button>
-                  ))}
+                  {(dynamicImages ?? property?.images ?? []).map(
+                    (image, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`relative h-24 rounded-lg overflow-hidden transition-all duration-300 ${
+                          index === currentImageIndex
+                            ? "ring-2 ring-black dark:ring-white"
+                            : "hover:opacity-75"
+                        }`}
+                      >
+                        <img
+                          src={getFullImageUrl(image)}
+                          alt={`${property?.name} ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </button>
+                    )
+                  )}
                 </div>
               )}
             </div>
@@ -659,7 +612,7 @@ export const PropertyDetailPage: React.FC = () => {
                 Property Features
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                {property.features.map((feature, index) => (
+                {(property.features || []).map((feature, index) => (
                   <div key={index} className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-black dark:bg-white rounded-full" />
                     <span className="text-gray-600 dark:text-gray-400">
@@ -678,7 +631,7 @@ export const PropertyDetailPage: React.FC = () => {
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <p className="text-3xl font-light text-gray-900 dark:text-gray-100 mb-2">
-                    {formatPrice(propertyMarketValue)}
+                    {formatPrice(displayPropertyValue)}
                   </p>
                   <p className="text-gray-600 dark:text-gray-400">
                     Property Value
@@ -686,7 +639,7 @@ export const PropertyDetailPage: React.FC = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-2xl font-light text-green-600 dark:text-green-400 mb-2">
-                    {calculatedAnnualYield.toFixed(1)}%
+                    {displayAnnualYield.toFixed(1)}%
                   </p>
                   <p className="text-gray-600 dark:text-gray-400">
                     Annual Yield
@@ -735,7 +688,32 @@ export const PropertyDetailPage: React.FC = () => {
                         Current Token Value
                       </span>
                       <span className="text-xl font-light text-green-600 dark:text-green-400">
-                        {bestBid !== null ? `€${bestBid.toFixed(2)}` : "-"}
+                        {(() => {
+                          const bestBid =
+                            typeof marketSummary.bestBid === "number"
+                              ? marketSummary.bestBid
+                              : marketSummary.bestBid !== null &&
+                                  marketSummary.bestBid !== undefined
+                                ? Number(marketSummary.bestBid)
+                                : null;
+                          const lastTrade =
+                            typeof marketSummary.lastTrade === "number"
+                              ? marketSummary.lastTrade
+                              : marketSummary.lastTrade !== null &&
+                                  marketSummary.lastTrade !== undefined
+                                ? Number(marketSummary.lastTrade)
+                                : null;
+                          if (typeof bestBid === "number" && !isNaN(bestBid)) {
+                            return `€${bestBid.toFixed(2)}`;
+                          } else if (
+                            typeof lastTrade === "number" &&
+                            !isNaN(lastTrade)
+                          ) {
+                            return `Last Trade: €${lastTrade.toFixed(2)}`;
+                          } else {
+                            return "-";
+                          }
+                        })()}
                       </span>
                     </div>
                   </div>
@@ -897,7 +875,19 @@ export const PropertyDetailPage: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
                     Tokens
                   </label>
-                  <div className="relative">
+                  <div className="relative flex items-center space-x-2">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setTokenInput(
+                          Math.max(minTokens, sanitizedTokenInput - 1)
+                        )
+                      }
+                      disabled={sanitizedTokenInput <= minTokens}
+                      className="p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
                     <input
                       type="number"
                       min={minTokens}
@@ -908,12 +898,42 @@ export const PropertyDetailPage: React.FC = () => {
                         const val = Math.floor(Number(e.target.value));
                         setTokenInput(isNaN(val) ? minTokens : val);
                       }}
-                      className="w-full pr-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent transition-all duration-300"
+                      className="flex-1 px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 dark:text-white text-center text-lg font-light focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent transition-all duration-300"
                     />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setTokenInput(
+                          Math.min(maxTokens, sanitizedTokenInput + 1)
+                        )
+                      }
+                      disabled={sanitizedTokenInput >= maxTokens}
+                      className="p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     Enter the number of tokens (1 - {maxTokens})
                   </p>
+
+                  {/* Quick Selection Buttons */}
+                  <div className="grid grid-cols-4 gap-2 mt-3">
+                    {[1, 10, 100, 1000].map((qty) => (
+                      <button
+                        key={qty}
+                        type="button"
+                        onClick={() => setTokenInput(Math.min(maxTokens, qty))}
+                        className={`py-2 px-3 text-sm rounded-lg transition-all duration-300 ${
+                          sanitizedTokenInput === qty
+                            ? "bg-black dark:bg-white text-white dark:text-black"
+                            : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600"
+                        }`}
+                      >
+                        {qty}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -972,7 +992,7 @@ export const PropertyDetailPage: React.FC = () => {
                     Monthly Rent
                   </span>
                   <span className="text-gray-900 dark:text-gray-100 font-light">
-                    {formatPrice(property.monthlyRent)}
+                    {formatPrice(property.monthlyRent ?? 0)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-700">
@@ -980,16 +1000,16 @@ export const PropertyDetailPage: React.FC = () => {
                     Property Tax (Monthly)
                   </span>
                   <span className="text-gray-900 dark:text-gray-100 font-light">
-                    €{formatNumber(property.propertyTax)}
+                    €{formatNumber(property.propertyTax ?? 0)}
                   </span>
                 </div>
-                {property.hoa > 0 && (
+                {property.hoa && property.hoa > 0 && (
                   <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-700">
                     <span className="text-gray-600 dark:text-gray-400">
                       HOA Fees
                     </span>
                     <span className="text-gray-900 dark:text-gray-100 font-light">
-                      €{formatNumber(property.hoa)}
+                      €{formatNumber(property.hoa ?? 0)}
                     </span>
                   </div>
                 )}
@@ -998,7 +1018,7 @@ export const PropertyDetailPage: React.FC = () => {
                     Walk Score
                   </span>
                   <span className="text-gray-900 dark:text-gray-100 font-light">
-                    {property.walkScore}/100
+                    {property.walkScore ?? 0}/100
                   </span>
                 </div>
               </div>

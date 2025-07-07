@@ -1,5 +1,7 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+// Fix for missing types for react-plotly.js
+// @ts-ignore
+import Plot from 'react-plotly.js';
 import { Building2, BarChart3, ArrowRightLeft, FileText, Users } from 'lucide-react';
 
 export const TradingSection: React.FC = () => {
@@ -42,19 +44,25 @@ export const TradingSection: React.FC = () => {
     },
   ];
 
-  // Custom tick formatter for responsive display
-  const formatXAxisTick = (tickItem: string, index: number) => {
-    // On mobile, show every 3rd month to prevent overlap
-    if (window.innerWidth < 768) {
-      return index % 3 === 0 ? tickItem : '';
+  // Prepare data for plotly.js
+  const plotlyData = [
+    {
+      x: priceData.map(item => item.month),
+      y: priceData.map(item => item.price),
+      type: 'scatter',
+      mode: 'lines+markers',
+      line: {
+        color: '#000000',
+        width: 3
+      },
+      marker: {
+        color: '#000000',
+        size: 6
+      },
+      name: 'Property Value',
+      hovertemplate: '<b>%{x}</b><br>Value: €%{y}<extra></extra>'
     }
-    // On tablet, show every 2nd month
-    if (window.innerWidth < 1024) {
-      return index % 2 === 0 ? tickItem : '';
-    }
-    // On desktop, show all months
-    return tickItem;
-  };
+  ];
 
   return (
     <div className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 py-24">
@@ -74,59 +82,51 @@ export const TradingSection: React.FC = () => {
               Property Market Performance
             </h3>
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart 
-                  data={priceData}
-                  margin={{ 
-                    top: 10, 
-                    right: 10, 
-                    left: 10, 
-                    bottom: 20 
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                  <XAxis 
-                    dataKey="month" 
-                    stroke="#6B7280"
-                    tick={{ 
-                      fill: '#6B7280',
-                      fontSize: window.innerWidth < 768 ? 10 : 12
-                    }}
-                    tickFormatter={formatXAxisTick}
-                    interval={0}
-                    padding={{ left: 10, right: 10 }}
-                    height={40}
-                  />
-                  <YAxis 
-                    stroke="#6B7280"
-                    tick={{ 
-                      fill: '#6B7280',
-                      fontSize: window.innerWidth < 768 ? 10 : 12
-                    }}
-                    domain={['dataMin - 5', 'dataMax + 5']}
-                    width={40}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#1F2937',
-                      border: 'none',
-                      borderRadius: '0.5rem',
-                      color: '#F3F4F6',
-                      fontSize: '14px'
-                    }}
-                    labelStyle={{ color: '#F3F4F6' }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="price"
-                    stroke="#000000"
-                    strokeWidth={2}
-                    dot={{ fill: '#000000', strokeWidth: 2, r: 3 }}
-                    activeDot={{ r: 5, fill: '#000000' }}
-                    connectNulls
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              <Plot
+                data={plotlyData}
+                layout={{
+                  autosize: true,
+                  height: 260,
+                  margin: { l: 50, r: 20, t: 20, b: 40 },
+                  paper_bgcolor: 'rgba(0,0,0,0)',
+                  plot_bgcolor: 'rgba(0,0,0,0)',
+                  xaxis: {
+                    title: '',
+                    color: '#6B7280',
+                    gridcolor: '#374151',
+                    showgrid: true,
+                    zeroline: false,
+                    tickfont: {
+                      size: window.innerWidth < 768 ? 10 : 12,
+                      color: '#6B7280'
+                    }
+                  },
+                  yaxis: {
+                    title: '',
+                    color: '#6B7280',
+                    gridcolor: '#374151',
+                    showgrid: true,
+                    zeroline: false,
+                    tickfont: {
+                      size: window.innerWidth < 768 ? 10 : 12,
+                      color: '#6B7280'
+                    },
+                    tickformat: '€,.0f'
+                  },
+                  font: { 
+                    color: '#6B7280',
+                    family: 'system-ui, -apple-system, sans-serif'
+                  },
+                  showlegend: false,
+                  hovermode: 'closest'
+                }}
+                config={{ 
+                  displayModeBar: false, 
+                  responsive: true,
+                  staticPlot: false
+                }}
+                style={{ width: '100%', height: '100%' }}
+              />
             </div>
           </div>
 
