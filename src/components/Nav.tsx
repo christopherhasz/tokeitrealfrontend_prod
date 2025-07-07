@@ -134,34 +134,6 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
           {/* Action buttons container - positioned to the right */}
           <div className="hidden md:flex items-center">
             <div className="flex items-center space-x-6">
-              {/* Authentication buttons */}
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-base">
-                    Sign In
-                  </button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button className="bg-black dark:bg-white text-white dark:text-black rounded-lg font-light px-6 py-3 text-base hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300">
-                    Sign Up
-                  </button>
-                </SignUpButton>
-              </SignedOut>
-              
-              <SignedIn>
-                <UserButton 
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-10 h-10",
-                      userButtonPopoverCard: "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700",
-                      userButtonPopoverActionButton: "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700",
-                      userButtonPopoverActionButtonText: "text-gray-700 dark:text-gray-300",
-                      userButtonPopoverFooter: "hidden"
-                    }
-                  }}
-                />
-              </SignedIn>
-
               {/* Demo Platform button */}
               <button
                 onClick={handleDemoPlatformClick}
@@ -204,6 +176,34 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
                 )}
               </button>
 
+              {/* Authentication buttons - positioned after theme switch */}
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-base">
+                    Sign In
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="bg-black dark:bg-white text-white dark:text-black rounded-lg font-light px-6 py-3 text-base hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300">
+                    Sign Up
+                  </button>
+                </SignUpButton>
+              </SignedOut>
+              
+              <SignedIn>
+                <UserButton 
+                  appearance={{
+                    elements: {
+                      avatarBox: "w-10 h-10",
+                      userButtonPopoverCard: "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700",
+                      userButtonPopoverActionButton: "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700",
+                      userButtonPopoverActionButtonText: "text-gray-700 dark:text-gray-300",
+                      userButtonPopoverFooter: "hidden"
+                    }
+                  }}
+                />
+              </SignedIn>
+
               {showContact && (
                 <>
                   <button
@@ -231,34 +231,6 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-4">
-            {/* Mobile Authentication */}
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm">
-                  Sign In
-                </button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button className="bg-black dark:bg-white text-white dark:text-black rounded-lg px-3 py-2 text-sm font-light hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300">
-                  Sign Up
-                </button>
-              </SignUpButton>
-            </SignedOut>
-            
-            <SignedIn>
-              <UserButton 
-                appearance={{
-                  elements: {
-                    avatarBox: "w-8 h-8",
-                    userButtonPopoverCard: "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700",
-                    userButtonPopoverActionButton: "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700",
-                    userButtonPopoverActionButtonText: "text-gray-700 dark:text-gray-300",
-                    userButtonPopoverFooter: "hidden"
-                  }
-                }}
-              />
-            </SignedIn>
-
             <button
               onClick={handleDemoPlatformClick}
               className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm
@@ -295,6 +267,35 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
                 <Moon className="w-5 h-5" />
               )}
             </button>
+            
+            {/* Mobile Authentication - positioned after theme switch */}
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm">
+                  Sign In
+                </button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <button className="bg-black dark:bg-white text-white dark:text-black rounded-lg px-3 py-2 text-sm font-light hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300">
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </SignedOut>
+            
+            <SignedIn>
+              <UserButton 
+                appearance={{
+                  elements: {
+                    avatarBox: "w-8 h-8",
+                    userButtonPopoverCard: "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700",
+                    userButtonPopoverActionButton: "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700",
+                    userButtonPopoverActionButtonText: "text-gray-700 dark:text-gray-300",
+                    userButtonPopoverFooter: "hidden"
+                  }
+                }}
+              />
+            </SignedIn>
+
             {showContact && (
               <button
                 onClick={() => setIsOpen(!isOpen)}
