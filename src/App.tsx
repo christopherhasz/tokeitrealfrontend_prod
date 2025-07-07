@@ -4,13 +4,6 @@ import { HomePage } from "./pages/HomePage";
 import { ResourcesPage } from "./pages/ResourcesPage";
 import { DemoPlatformPage } from "./pages/DemoPlatformPage";
 import { PropertyDetailPage } from "./pages/PropertyDetailPage";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/clerk-react";
 
 const App: React.FC = () => {
   const initialized = useRef(false);
@@ -51,22 +44,6 @@ const App: React.FC = () => {
 
   return (
     <>
-      <header
-        style={{
-          padding: "1rem",
-          display: "flex",
-          justifyContent: "flex-end",
-          gap: "1rem",
-        }}
-      >
-        <SignedOut>
-          <SignInButton />
-          <SignUpButton />
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-      </header>
       <Router>
         <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
           <Routes>
