@@ -19,6 +19,7 @@ This project supports multiple environments with different configurations:
 | `VITE_API_URL` | Backend API URL | `http://localhost:3000` | `https://api.tokeitreal.com` |
 | `VITE_WS_URL` | WebSocket URL | `ws://localhost:3000` | `wss://api.tokeitreal.com` |
 | `VITE_ENV` | Environment identifier | `development` | `production` |
+| `VITE_CLERK_PUBLISHABLE_KEY` | Clerk authentication key | `pk_test_...` | `pk_live_...` |
 
 ### Development Scripts
 
