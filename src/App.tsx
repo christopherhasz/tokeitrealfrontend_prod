@@ -4,6 +4,7 @@ import { HomePage } from "./pages/HomePage";
 import { ResourcesPage } from "./pages/ResourcesPage";
 import { DemoPlatformPage } from "./pages/DemoPlatformPage";
 import { PropertyDetailPage } from "./pages/PropertyDetailPage";
+import { PortfolioPage } from "./pages/PortfolioPage";
 
 const App: React.FC = () => {
   const initialized = useRef(false);
@@ -54,6 +55,7 @@ const App: React.FC = () => {
               path="/demo-platform/:propertyId"
               element={<PropertyDetailPage />}
             />
+            <Route path="/portfolio" element={<PortfolioPage />} />
           </Routes>
         </div>
       </Router>

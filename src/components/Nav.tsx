@@ -99,6 +99,11 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
     setIsOpen(false);
   };
 
+  const handlePortfolioClick = () => {
+    navigate("/portfolio");
+    setIsOpen(false);
+  };
+
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (location.pathname === "/") {
@@ -142,6 +147,17 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
               >
                 Demo Platform
               </button>
+
+              {/* Portfolio button - only show when signed in */}
+              <SignedIn>
+                <button
+                  onClick={handlePortfolioClick}
+                  className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-base
+                           ${location.pathname === "/portfolio" ? "text-gray-900 dark:text-white" : ""}`}
+                >
+                  Portfolio
+                </button>
+              </SignedIn>
 
               {/* Resources button - always shown */}
               <button
@@ -238,6 +254,15 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
             >
               Demo
             </button>
+            <SignedIn>
+              <button
+                onClick={handlePortfolioClick}
+                className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm
+                         ${location.pathname === "/portfolio" ? "text-gray-900 dark:text-white" : ""}`}
+              >
+                Portfolio
+              </button>
+            </SignedIn>
             <button
               onClick={handleResourcesClick}
               className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm
