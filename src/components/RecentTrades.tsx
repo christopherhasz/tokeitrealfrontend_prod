@@ -129,7 +129,9 @@ export const RecentTrades: React.FC<RecentTradesProps> = ({ propertyId }) => {
           </h3>
         </div>
         <div className="text-right">
-          <p className="text-sm text-gray-600 dark:text-gray-400">24h Volume</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Volume (Last Month)
+          </p>
           <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
             {formatTotal(totalVolume)}
           </p>

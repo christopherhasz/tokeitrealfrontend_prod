@@ -43,6 +43,7 @@ import {
 import type { OrderRequest, OrderResponse } from "../services/marketApi";
 import { properties } from "../data/properties";
 import { BACKEND_URL } from "../config/environment";
+import { useUser } from "@clerk/clerk-react";
 
 interface Property {
   id: string;
@@ -98,7 +99,7 @@ export const PropertyDetailPage: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
   const [orderError, setOrderError] = useState<string | null>(null);
-  const [userName, setUserName] = useState("");
+  const { isLoaded, isSignedIn, user } = useUser();
   const [bestBid, setBestBid] = useState<number | null>(null);
   const [bestAsk, setBestAsk] = useState<number | null>(null);
   const [lastTradePrice, setLastTradePrice] = useState<number | null>(null);
@@ -289,8 +290,8 @@ export const PropertyDetailPage: React.FC = () => {
   // The TradingInterface orderData: { type, orderType, quantity, price?, total }
   const handlePlaceOrder = async (orderData: any): Promise<void> => {
     if (!property) return;
-    if (!userName) {
-      setOrderError("Please enter your name before placing an order.");
+    if (!isSignedIn || !user) {
+      setOrderError("Please log in to activate trading.");
       return;
     }
     setOrderError(null);
@@ -298,7 +299,7 @@ export const PropertyDetailPage: React.FC = () => {
     try {
       const fullOrderData: OrderRequest = {
         property_id: property.id,
-        user_id: userName,
+        user_id: user.fullName || user.username || user.id,
         side: orderData.type,
         price:
           orderData.orderType === "market"
@@ -467,16 +468,11 @@ export const PropertyDetailPage: React.FC = () => {
 
         {/* Name input for user_id */}
         <div className="mb-8 max-w-md mx-auto">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Name
-          </label>
-          <input
-            type="text"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            placeholder="Enter your name"
-            className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent transition-all duration-300"
-          />
+          {!isLoaded && (
+            <div className="text-center text-gray-600 dark:text-gray-400">
+              Loading...
+            </div>
+          )}
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
@@ -843,6 +839,7 @@ export const PropertyDetailPage: React.FC = () => {
                   bestAsk={bestAsk}
                   currentPrice={property.currentTokenValue || 42.8}
                   onPlaceOrder={handlePlaceOrder}
+                  disabled={!isSignedIn}
                 />
 
                 {/* Order Status Messages */}

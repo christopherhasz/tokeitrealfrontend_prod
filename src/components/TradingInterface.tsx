@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Plus, Minus, TrendingUp, TrendingDown, Loader2 } from "lucide-react";
+import { useClerk } from "@clerk/clerk-react";
 
 interface TradingInterfaceProps {
   propertyId: string;
@@ -7,6 +8,7 @@ interface TradingInterfaceProps {
   bestAsk: number | null;
   currentPrice: number;
   onPlaceOrder: (order: OrderData) => void;
+  disabled?: boolean;
 }
 
 interface OrderData {
@@ -23,6 +25,7 @@ export const TradingInterface: React.FC<TradingInterfaceProps> = ({
   bestAsk,
   currentPrice,
   onPlaceOrder,
+  disabled = false,
 }) => {
   const [activeTab, setActiveTab] = useState<"buy" | "sell">("buy");
   const [orderType, setOrderType] = useState<"market" | "limit">("market");
@@ -31,6 +34,7 @@ export const TradingInterface: React.FC<TradingInterfaceProps> = ({
     bestAsk ?? bestBid ?? currentPrice
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const clerk = useClerk();
 
   // Always use the latest bestAsk/bestBid for market orders
   const getMarketPrice = () => {
@@ -75,6 +79,12 @@ export const TradingInterface: React.FC<TradingInterfaceProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (disabled) {
+      if (clerk && typeof clerk.openSignIn === "function") {
+        clerk.openSignIn();
+      }
+      return;
+    }
     setIsSubmitting(true);
 
     try {
@@ -112,7 +122,6 @@ export const TradingInterface: React.FC<TradingInterfaceProps> = ({
       <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-6">
         Place Order
       </h3>
-
       {/* Buy/Sell Tabs */}
       <div className="flex mb-6 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
         <button
