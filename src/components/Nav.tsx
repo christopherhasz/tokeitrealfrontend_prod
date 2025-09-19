@@ -2,13 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/clerk-react";
 
 interface NavProps {
   showContact?: boolean;
@@ -139,26 +132,6 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
           {/* Action buttons container - positioned to the right */}
           <div className="hidden md:flex items-center">
             <div className="flex items-center space-x-6">
-              {/* Demo Platform button */}
-              <button
-                onClick={handleDemoPlatformClick}
-                className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-base
-                         ${location.pathname === "/demo-platform" || location.pathname.startsWith("/demo-platform/") ? "text-gray-900 dark:text-white" : ""}`}
-              >
-                Demo Platform
-              </button>
-
-              {/* Portfolio button - only show when signed in */}
-              <SignedIn>
-                <button
-                  onClick={handlePortfolioClick}
-                  className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-base
-                           ${location.pathname === "/portfolio" ? "text-gray-900 dark:text-white" : ""}`}
-                >
-                  Portfolio
-                </button>
-              </SignedIn>
-
               {/* Resources button - always shown */}
               <button
                 onClick={handleResourcesClick}
@@ -168,17 +141,14 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
                 Resources
               </button>
 
-              {/* Only show Connect button when signed out */}
-              <SignedOut>
-                <a
-                  href="https://www.linkedin.com/company/tokeitreal/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-base"
-                >
-                  Connect
-                </a>
-              </SignedOut>
+              <a
+                href="https://www.linkedin.com/company/tokeitreal/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-base"
+              >
+                Connect
+              </a>
 
               <button
                 onClick={toggleDarkMode}
@@ -191,34 +161,6 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
                   <Moon className="w-5 h-5" />
                 )}
               </button>
-
-              {/* Authentication buttons - positioned after theme switch */}
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-base">
-                    Sign In
-                  </button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button className="bg-black dark:bg-white text-white dark:text-black rounded-lg font-light px-6 py-3 text-base hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300">
-                    Sign Up
-                  </button>
-                </SignUpButton>
-              </SignedOut>
-              
-              <SignedIn>
-                <UserButton 
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-10 h-10",
-                      userButtonPopoverCard: "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700",
-                      userButtonPopoverActionButton: "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700",
-                      userButtonPopoverActionButtonText: "text-gray-700 dark:text-gray-300",
-                      userButtonPopoverFooter: "hidden"
-                    }
-                  }}
-                />
-              </SignedIn>
 
               {showContact && (
                 <>
@@ -248,38 +190,20 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-4">
             <button
-              onClick={handleDemoPlatformClick}
-              className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm
-                       ${location.pathname === "/demo-platform" || location.pathname.startsWith("/demo-platform/") ? "text-gray-900 dark:text-white" : ""}`}
-            >
-              Demo
-            </button>
-            <SignedIn>
-              <button
-                onClick={handlePortfolioClick}
-                className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm
-                         ${location.pathname === "/portfolio" ? "text-gray-900 dark:text-white" : ""}`}
-              >
-                Portfolio
-              </button>
-            </SignedIn>
-            <button
               onClick={handleResourcesClick}
               className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm
                        ${location.pathname === "/resources" ? "text-gray-900 dark:text-white" : ""}`}
             >
               Resources
             </button>
-            <SignedOut>
-              <a
-                href="https://www.linkedin.com/company/tokeitreal/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm"
-              >
-                Connect
-              </a>
-            </SignedOut>
+            <a
+              href="https://www.linkedin.com/company/tokeitreal/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm"
+            >
+              Connect
+            </a>
 
             <button
               onClick={toggleDarkMode}
@@ -293,34 +217,6 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
               )}
             </button>
             
-            {/* Mobile Authentication - positioned after theme switch */}
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm">
-                  Sign In
-                </button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button className="bg-black dark:bg-white text-white dark:text-black rounded-lg px-3 py-2 text-sm font-light hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300">
-                  Sign Up
-                </button>
-              </SignUpButton>
-            </SignedOut>
-            
-            <SignedIn>
-              <UserButton 
-                appearance={{
-                  elements: {
-                    avatarBox: "w-8 h-8",
-                    userButtonPopoverCard: "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700",
-                    userButtonPopoverActionButton: "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700",
-                    userButtonPopoverActionButtonText: "text-gray-700 dark:text-gray-300",
-                    userButtonPopoverFooter: "hidden"
-                  }
-                }}
-              />
-            </SignedIn>
-
             {showContact && (
               <button
                 onClick={() => setIsOpen(!isOpen)}
