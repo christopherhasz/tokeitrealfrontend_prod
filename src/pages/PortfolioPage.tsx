@@ -10,11 +10,18 @@ import {
   BarChart3,
   Calendar,
   Eye,
+  Wallet,
 } from "lucide-react";
 import { Nav } from "../components/Nav";
-import { properties } from "../data/properties";
 import { BACKEND_URL } from "../config/environment";
 import { useUser } from "@clerk/clerk-react";
+import {
+  getUserPortfolio,
+  getUserBalance,
+  PortfolioItem,
+  getAllProperties,
+  Property,
+} from "../services/api";
 
 interface UserHolding {
   propertyId: string;
@@ -31,6 +38,10 @@ export const PortfolioPage: React.FC = () => {
   const navigate = useNavigate();
   const { isLoaded, isSignedIn, user } = useUser();
   const [holdings, setHoldings] = useState<UserHolding[]>([]);
+  const [userBalance, setUserBalance] = useState<string>("0.00");
+  const [portfolioData, setPortfolioData] = useState<PortfolioItem[]>([]);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [marketSummaries, setMarketSummaries] = useState<{
     [propertyId: string]: { bestBid: number | null; lastTrade: number | null };
   }>({});
@@ -42,25 +53,97 @@ export const PortfolioPage: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Fetch properties from API
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const propertiesData = await getAllProperties();
+        setProperties(propertiesData);
+      } catch (error) {
+        console.error("Failed to fetch properties:", error);
+        // Fallback to empty properties
+        setProperties([]);
+      }
+    };
+
+    fetchProperties();
+  }, []);
+
+  // Fetch user portfolio and balance from backend
+  useEffect(() => {
+    if (isSignedIn && user) {
+      const fetchPortfolioData = async () => {
+        try {
+          setIsLoading(true);
+          const [portfolioResponse, balanceResponse] = await Promise.all([
+            getUserPortfolio(user.id),
+            getUserBalance(user.id),
+          ]);
+
+          setPortfolioData(portfolioResponse.portfolio);
+          setUserBalance(balanceResponse.balance);
+
+          // Convert backend portfolio data to frontend format
+          const convertedHoldings: UserHolding[] =
+            portfolioResponse.portfolio.map((item) => {
+              const totalInvested = item.total_tokens * item.avg_price;
+              const currentValue = item.total_value || totalInvested;
+              const totalReturn = currentValue - totalInvested;
+              const returnPercentage =
+                totalInvested > 0 ? (totalReturn / totalInvested) * 100 : 0;
+
+              // Mock monthly return for now (in real app, this would come from backend)
+              const monthlyReturn = totalInvested * 0.005; // 0.5% monthly return
+
+              return {
+                propertyId: item.property_id,
+                tokensOwned: item.total_tokens,
+                averagePurchasePrice: item.avg_price,
+                totalInvested,
+                currentValue,
+                monthlyReturn,
+                totalReturn,
+                returnPercentage,
+              };
+            });
+
+          setHoldings(convertedHoldings);
+        } catch (error) {
+          console.error("Failed to fetch portfolio data:", error);
+          // Fallback to empty portfolio
+          setHoldings([]);
+          setPortfolioData([]);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchPortfolioData();
+    }
+  }, [isSignedIn, user]);
+
   // Fetch market summaries for trading properties
   useEffect(() => {
     properties.forEach((property) => {
       if (property.status === "trading") {
-        fetch(`/api/market/${property.id}/summary`)
+        fetch(`/api/orders/property/${property.id}`)
           .then((res) => res.json())
           .then((data) => {
             setMarketSummaries((prev) => ({
               ...prev,
               [property.id]: {
-                bestBid: data.bestBid,
-                lastTrade: data.lastTrade,
+                bestBid:
+                  data.bids && data.bids.length > 0
+                    ? Number(data.bids[0].price)
+                    : null,
+                lastTrade: null, // We'll get this from trades table later
               },
             }));
           })
           .catch(() => {});
       }
     });
-  }, []);
+  }, [properties]);
 
   // Fetch property images
   useEffect(() => {
@@ -69,36 +152,6 @@ export const PortfolioPage: React.FC = () => {
       .then((data) => setPropertyImages(data))
       .catch(() => setPropertyImages({}));
   }, []);
-
-  // Mock user holdings data - in a real app, this would come from the backend
-  useEffect(() => {
-    if (isSignedIn && user) {
-      // Simulate user holdings
-      const mockHoldings: UserHolding[] = [
-        {
-          propertyId: "city-apartment-building",
-          tokensOwned: 25,
-          averagePurchasePrice: 240.0,
-          totalInvested: 6000,
-          currentValue: 6200,
-          monthlyReturn: 30.5,
-          totalReturn: 200,
-          returnPercentage: 3.33,
-        },
-        {
-          propertyId: "modern-family-apartment",
-          tokensOwned: 15,
-          averagePurchasePrice: 10.0,
-          totalInvested: 150,
-          currentValue: 165,
-          monthlyReturn: 2.4,
-          totalReturn: 15,
-          returnPercentage: 10.0,
-        },
-      ];
-      setHoldings(mockHoldings);
-    }
-  }, [isSignedIn, user]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("de-DE", {
@@ -123,7 +176,9 @@ export const PortfolioPage: React.FC = () => {
     if (property.status === "trading") {
       const summary = marketSummaries[propertyId];
       const bestBid =
-        summary && typeof summary.bestBid === "number" && !isNaN(summary.bestBid)
+        summary &&
+        typeof summary.bestBid === "number" &&
+        !isNaN(summary.bestBid)
           ? summary.bestBid
           : null;
       const lastTrade =
@@ -132,13 +187,15 @@ export const PortfolioPage: React.FC = () => {
         !isNaN(summary.lastTrade)
           ? summary.lastTrade
           : null;
-      
+
       if (typeof bestBid === "number") {
         return bestBid;
       } else if (typeof lastTrade === "number") {
         return lastTrade;
       } else {
-        return property.currentTokenValue || property.price / property.totalTokens;
+        return (
+          property.currentTokenValue || property.price / property.totalTokens
+        );
       }
     } else {
       return property.price / property.totalTokens;
@@ -151,7 +208,7 @@ export const PortfolioPage: React.FC = () => {
       const currentTokenValue = getCurrentTokenValue(holding.propertyId);
       const currentValue = holding.tokensOwned * currentTokenValue;
       const totalReturn = currentValue - holding.totalInvested;
-      
+
       return {
         totalInvested: totals.totalInvested + holding.totalInvested,
         currentValue: totals.currentValue + currentValue,
@@ -225,6 +282,21 @@ export const PortfolioPage: React.FC = () => {
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Demo Platform</span>
         </button>
+
+        {/* Balance Display */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-2xl px-8 py-4">
+            <Wallet className="w-6 h-6 text-green-600 dark:text-green-400" />
+            <div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                Available Balance
+              </p>
+              <p className="text-2xl font-light text-gray-900 dark:text-gray-100">
+                {formatPrice(parseFloat(userBalance))}
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* Header */}
         <div className="text-center mb-16">
@@ -304,7 +376,13 @@ export const PortfolioPage: React.FC = () => {
             Your Holdings
           </h2>
 
-          {holdings.length === 0 ? (
+          {isLoading ? (
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center shadow-lg">
+              <div className="text-gray-600 dark:text-gray-400">
+                Loading portfolio...
+              </div>
+            </div>
+          ) : holdings.length === 0 ? (
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center shadow-lg">
               <Home className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-2">
@@ -323,13 +401,18 @@ export const PortfolioPage: React.FC = () => {
           ) : (
             <div className="grid gap-6">
               {holdings.map((holding) => {
-                const property = properties.find((p) => p.id === holding.propertyId);
+                const property = properties.find(
+                  (p) => p.id === holding.propertyId
+                );
                 if (!property) return null;
 
-                const currentTokenValue = getCurrentTokenValue(holding.propertyId);
+                const currentTokenValue = getCurrentTokenValue(
+                  holding.propertyId
+                );
                 const currentValue = holding.tokensOwned * currentTokenValue;
                 const totalReturn = currentValue - holding.totalInvested;
-                const returnPercentage = (totalReturn / holding.totalInvested) * 100;
+                const returnPercentage =
+                  (totalReturn / holding.totalInvested) * 100;
 
                 return (
                   <div
@@ -343,8 +426,11 @@ export const PortfolioPage: React.FC = () => {
                           <img
                             src={
                               propertyImages[property.id]?.[0]
-                                ? getFullImageUrl(propertyImages[property.id][0])
-                                : property.image || "/assets/default-property.jpg"
+                                ? getFullImageUrl(
+                                    propertyImages[property.id][0]
+                                  )
+                                : property.image ||
+                                  "/assets/default-property.jpg"
                             }
                             alt={property.name}
                             className="w-full h-full object-cover"
@@ -442,7 +528,9 @@ export const PortfolioPage: React.FC = () => {
                           </div>
                         </div>
                         <button
-                          onClick={() => navigate(`/demo-platform/${property.id}`)}
+                          onClick={() =>
+                            navigate(`/demo-platform/${property.id}`)
+                          }
                           className="flex items-center justify-center space-x-2 bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-lg font-light hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors duration-300 mt-4"
                         >
                           <Eye className="w-4 h-4" />

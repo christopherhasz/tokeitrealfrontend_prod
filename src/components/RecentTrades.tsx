@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Clock, TrendingUp, TrendingDown } from "lucide-react";
-import {
-  getTradeHistory,
-  subscribeToTrades,
-  initializeMarketConnection,
-  disconnectMarket,
-} from "../services/marketApi";
+import { getPropertyTrades } from "../services/api";
 
 interface Trade {
   id: string;
@@ -22,13 +17,14 @@ interface RecentTradesProps {
 
 export const RecentTrades: React.FC<RecentTradesProps> = ({ propertyId }) => {
   const [trades, setTrades] = useState<Trade[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
     let isMounted = true;
-    initializeMarketConnection();
+
     // Fetch initial trades
-    getTradeHistory(propertyId)
+    setIsLoading(true);
+    getPropertyTrades(propertyId)
       .then((data: any) => {
         if (!isMounted) return;
         // Map backend data to frontend format
@@ -52,33 +48,17 @@ export const RecentTrades: React.FC<RecentTradesProps> = ({ propertyId }) => {
           }))
         );
       })
-      .catch(() => {});
-    // Subscribe to real-time updates
-    unsubscribe = subscribeToTrades(propertyId, (data: any) => {
-      let tradesArr = Array.isArray(data.trades) ? data.trades : data;
-      setTrades(
-        tradesArr.map((t: any) => ({
-          id: t.id?.toString() ?? "",
-          price: t.price,
-          quantity: t.amount ?? t.quantity ?? 0,
-          timestamp: (() => {
-            if (typeof t.timestamp === "string") {
-              const [datePart, timePart] = t.timestamp.split(" ");
-              if (datePart && timePart) {
-                return new Date(datePart + "T" + timePart);
-              }
-            }
-            return new Date(t.timestamp);
-          })(),
-          side: t.side ?? (t.buy_order_id ? "buy" : "sell"),
-          total: (t.price || 0) * (t.amount ?? t.quantity ?? 0),
-        }))
-      );
-    });
+      .catch((error) => {
+        console.error("Failed to fetch trades:", error);
+      })
+      .finally(() => {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      });
+
     return () => {
       isMounted = false;
-      if (unsubscribe) unsubscribe();
-      disconnectMarket();
     };
   }, [propertyId]);
 
@@ -168,51 +148,60 @@ export const RecentTrades: React.FC<RecentTradesProps> = ({ propertyId }) => {
 
       {/* Trades List */}
       <div className="space-y-2 max-h-96 overflow-y-auto">
-        {trades.map((trade, index) => (
-          <div
-            key={trade.id}
-            className={`grid grid-cols-4 gap-2 text-xs py-2 px-2 rounded transition-all duration-300 ${
-              index === 0 ? "bg-blue-50 dark:bg-blue-900/20 animate-pulse" : ""
-            } hover:bg-gray-50 dark:hover:bg-gray-700`}
-          >
-            <div className="flex items-center space-x-1">
-              {trade.side === "buy" ? (
-                <TrendingUp className="w-3 h-3 text-green-600" />
-              ) : (
-                <TrendingDown className="w-3 h-3 text-red-600" />
-              )}
-              <span className="text-gray-600 dark:text-gray-400">
-                {formatTime(trade.timestamp)}
+        {isLoading ? (
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-400">
+              Loading trades...
+            </p>
+          </div>
+        ) : trades.length > 0 ? (
+          trades.map((trade, index) => (
+            <div
+              key={trade.id}
+              className={`grid grid-cols-4 gap-2 text-xs py-2 px-2 rounded transition-all duration-300 ${
+                index === 0
+                  ? "bg-blue-50 dark:bg-blue-900/20 animate-pulse"
+                  : ""
+              } hover:bg-gray-50 dark:hover:bg-gray-700`}
+            >
+              <div className="flex items-center space-x-1">
+                {trade.side === "buy" ? (
+                  <TrendingUp className="w-3 h-3 text-green-600" />
+                ) : (
+                  <TrendingDown className="w-3 h-3 text-red-600" />
+                )}
+                <span className="text-gray-600 dark:text-gray-400">
+                  {formatTime(trade.timestamp)}
+                </span>
+              </div>
+
+              <span
+                className={`text-right font-medium ${
+                  trade.side === "buy"
+                    ? "text-green-600 dark:text-green-400"
+                    : "text-red-600 dark:text-red-400"
+                }`}
+              >
+                {formatPrice(trade.price)}
+              </span>
+
+              <span className="text-right text-gray-900 dark:text-gray-100">
+                {formatQuantity(trade.quantity)}
+              </span>
+
+              <span className="text-right text-gray-600 dark:text-gray-400">
+                {formatTotal(trade.total)}
               </span>
             </div>
-
-            <span
-              className={`text-right font-medium ${
-                trade.side === "buy"
-                  ? "text-green-600 dark:text-green-400"
-                  : "text-red-600 dark:text-red-400"
-              }`}
-            >
-              {formatPrice(trade.price)}
-            </span>
-
-            <span className="text-right text-gray-900 dark:text-gray-100">
-              {formatQuantity(trade.quantity)}
-            </span>
-
-            <span className="text-right text-gray-600 dark:text-gray-400">
-              {formatTotal(trade.total)}
-            </span>
+          ))
+        ) : (
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <Clock className="w-8 h-8 mx-auto mb-2 opacity-50" />
+            <p>No recent trades</p>
           </div>
-        ))}
+        )}
       </div>
-
-      {trades.length === 0 && (
-        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-          <Clock className="w-8 h-8 mx-auto mb-2 opacity-50" />
-          <p>No recent trades</p>
-        </div>
-      )}
     </div>
   );
 };

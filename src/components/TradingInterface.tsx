@@ -115,7 +115,10 @@ export const TradingInterface: React.FC<TradingInterfaceProps> = ({
     }
   };
 
-  const formatPrice = (price: number) => `€${price.toFixed(2)}`;
+  const formatPrice = (price: number | undefined | null): string => {
+    if (price == null || isNaN(price)) return "€0.00";
+    return `€${Number(price).toFixed(2)}`;
+  };
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg">
@@ -263,9 +266,9 @@ export const TradingInterface: React.FC<TradingInterfaceProps> = ({
                 ) : isNoLiquidity ? (
                   <span className="text-red-600">N/A</span>
                 ) : activeTab === "buy" ? (
-                  formatPrice(bestAsk as number)
+                  formatPrice(bestAsk)
                 ) : (
-                  formatPrice(bestBid as number)
+                  formatPrice(bestBid)
                 )
               ) : (
                 formatPrice(limitPrice)

@@ -24,24 +24,14 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Bar,
 } from "recharts";
-// Fix for missing types for react-plotly.js
-// @ts-ignore
-import Plot from "react-plotly.js";
+
 import { Nav } from "../components/Nav";
 import { OrderBook } from "../components/OrderBook";
 import { RecentTrades } from "../components/RecentTrades";
 import { TradingInterface } from "../components/TradingInterface";
-import {
-  initializeMarketConnection,
-  disconnectMarket,
-  placeOrder,
-  getOrderBook,
-  subscribeToOrderBook,
-} from "../services/marketApi";
-import type { OrderRequest, OrderResponse } from "../services/marketApi";
-import { properties } from "../data/properties";
+import { getOrderBook, getPropertyTrades, createOrder } from "../services/api";
+import { getPropertyById as getPropertyFromApi } from "../services/api";
 import { BACKEND_URL } from "../config/environment";
 import { useUser } from "@clerk/clerk-react";
 
@@ -51,8 +41,8 @@ interface Property {
   location: string;
   price: number;
   description: string;
-  fullDescription: string;
-  images: string[];
+  fullDescription?: string;
+  images?: string[];
   bedrooms: number;
   bathrooms: number;
   sqm: number;
@@ -65,29 +55,54 @@ interface Property {
   targetCapital?: number;
   status: "funding" | "trading";
   currentTokenValue?: number;
-  yearBuilt: number;
-  monthlyRent: number;
-  propertyTax: number;
-  hoa: number;
-  features: string[];
-  neighborhood: string;
-  walkScore: number;
+  marketValue?: number;
+  yearBuilt?: number;
+  monthlyRent?: number;
+  propertyTax?: number;
+  hoa?: number;
+  features?: string[];
+  neighborhood?: string;
+  walkScore?: number;
 }
 
-// Sample token price history data for the trading property
-const tokenPriceHistory = [
-  { month: "Jun", price: 38.5 },
-  { month: "Jul", price: 39.2 },
-  { month: "Aug", price: 40.1 },
-  { month: "Sep", price: 39.8 },
-  { month: "Oct", price: 41.3 },
-  { month: "Nov", price: 42.1 },
-  { month: "Dec", price: 42.8 },
-];
+// Helper to generate chart data from recent trades or show original token price
+const generateChartData = (trades: any[], property: Property | null) => {
+  if (!property) return [];
 
-// Helper to get property by id
-const getPropertyById = (id: string | undefined) =>
-  properties.find((p) => p.id === id);
+  if (trades.length === 0) {
+    // No trades yet - show single point at original token price
+    const originalTokenPrice =
+      property.currentTokenValue ||
+      property.price / (property.totalTokens || 1);
+    return [
+      {
+        label: "Original Price",
+        price: originalTokenPrice,
+        timestamp: new Date().toISOString(),
+      },
+    ];
+  }
+
+  // Convert trades to chart format, showing most recent first
+  return trades.slice(0, 10).map((trade, index) => ({
+    label: `Trade ${trades.length - index}`,
+    price: Number(trade.price),
+    timestamp: trade.timestamp,
+  }));
+};
+
+// Helper to get property by id from API
+const fetchPropertyById = async (
+  id: string | undefined
+): Promise<Property | null> => {
+  if (!id) return null;
+  try {
+    return await getPropertyFromApi(id);
+  } catch (error) {
+    console.error("Failed to fetch property:", error);
+    return null;
+  }
+};
 
 // Helper to prepend backend URL to image paths
 const getFullImageUrl = (path: string) =>
@@ -100,6 +115,9 @@ export const PropertyDetailPage: React.FC = () => {
   const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
   const [orderError, setOrderError] = useState<string | null>(null);
   const { isLoaded, isSignedIn, user } = useUser();
+  const [property, setProperty] = useState<Property | null>(null);
+  const [isLoadingProperty, setIsLoadingProperty] = useState(true);
+  const [propertyError, setPropertyError] = useState<string | null>(null);
   const [bestBid, setBestBid] = useState<number | null>(null);
   const [bestAsk, setBestAsk] = useState<number | null>(null);
   const [lastTradePrice, setLastTradePrice] = useState<number | null>(null);
@@ -111,23 +129,53 @@ export const PropertyDetailPage: React.FC = () => {
   }>({ bestBid: null, lastTrade: null });
   // Add state for dynamic images
   const [dynamicImages, setDynamicImages] = useState<string[] | null>(null);
+  // Investment calculator state
+  const [tokenInput, setTokenInput] = useState(1);
 
-  const property = propertyId ? getPropertyById(propertyId) : null;
+  // Fetch property data from API
+  useEffect(() => {
+    const fetchProperty = async () => {
+      if (propertyId) {
+        console.log("Fetching property with ID:", propertyId);
+        setIsLoadingProperty(true);
+        setPropertyError(null);
+        try {
+          const propertyData = await fetchPropertyById(propertyId);
+          console.log("Property data received:", propertyData);
+          setProperty(propertyData);
+        } catch (error) {
+          console.error("Failed to fetch property:", error);
+          setPropertyError(
+            error instanceof Error ? error.message : "Failed to fetch property"
+          );
+          setProperty(null);
+        } finally {
+          setIsLoadingProperty(false);
+        }
+      } else {
+        console.log("No propertyId provided");
+        setPropertyError("No property ID provided");
+        setIsLoadingProperty(false);
+      }
+    };
+
+    fetchProperty();
+  }, [propertyId]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
     // Initialize market connection for trading properties
     if (property?.status === "trading") {
-      initializeMarketConnection();
+      // initializeMarketConnection(); // This function is no longer imported
     }
 
     return () => {
       if (property?.status === "trading") {
-        disconnectMarket();
+        // disconnectMarket(); // This function is no longer imported
       }
     };
-  }, []);
+  }, [property]);
 
   // Debug: log bestBid, bestAsk, and order book data
   React.useEffect(() => {
@@ -163,54 +211,50 @@ export const PropertyDetailPage: React.FC = () => {
       setBestBid(bids.length > 0 ? bids[0].price : null);
       setBestAsk(asks.length > 0 ? asks[0].price : null);
     });
-    unsubscribeOrderBook = subscribeToOrderBook(property.id, (data: any) => {
-      const bids = (data.bids || [])
-        .map((b: any) => ({
-          ...b,
-          price:
-            typeof b.price === "string"
-              ? Number(b.price.replace(/[^\d.-]/g, ""))
-              : b.price,
-        }))
-        .filter((b: any) => typeof b.price === "number" && !isNaN(b.price))
-        .sort((a: any, b: any) => b.price - a.price);
-      const asks = (data.asks || [])
-        .map((a: any) => ({
-          ...a,
-          price:
-            typeof a.price === "string"
-              ? Number(a.price.replace(/[^\d.-]/g, ""))
-              : a.price,
-        }))
-        .filter((a: any) => typeof a.price === "number" && !isNaN(a.price))
-        .sort((a: any, b: any) => a.price - b.price);
-      setBestBid(bids.length > 0 ? bids[0].price : null);
-      setBestAsk(asks.length > 0 ? asks[0].price : null);
-    });
+    // unsubscribeOrderBook = subscribeToOrderBook(property.id, (data: any) => { // This function is no longer imported
+    //   const bids = (data.bids || [])
+    //     .map((b: any) => ({
+    //       ...b,
+    //       price:
+    //         typeof b.price === "string"
+    //           ? Number(b.price.replace(/[^\d.-]/g, ""))
+    //           : b.price,
+    //     }))
+    //     .filter((b: any) => typeof b.price === "number" && !isNaN(b.price))
+    //     .sort((a: any, b: any) => b.price - a.price);
+    //   const asks = (data.asks || [])
+    //     .map((a: any) => ({
+    //       ...a,
+    //       price:
+    //         typeof a.price === "string"
+    //           ? Number(a.price.replace(/[^\d.-]/g, ""))
+    //           : a.price,
+    //     }))
+    //     .filter((a: any) => typeof a.price === "number" && !isNaN(a.price))
+    //     .sort((a: any, b: any) => a.price - b.price);
+    //   setBestBid(bids.length > 0 ? bids[0].price : null);
+    //   setBestAsk(asks.length > 0 ? asks[0].price : null);
+    // });
     // Fetch recent trades
-    import("../services/marketApi").then(
-      ({ getTradeHistory, subscribeToTrades }) => {
-        getTradeHistory(property.id).then((data: any) => {
-          let tradesArr = Array.isArray(data.trades) ? data.trades : data;
-          setRecentTrades(tradesArr);
-          console.log("DEBUG: tradesArr", tradesArr);
-          setLastTradePrice(
-            tradesArr.length > 0 ? Number(tradesArr[0].price) : null
-          );
-        });
-        unsubscribeTrades = subscribeToTrades(property.id, (data: any) => {
-          let tradesArr = Array.isArray(data.trades) ? data.trades : data;
-          setRecentTrades(tradesArr);
-          console.log("DEBUG: tradesArr", tradesArr);
-          setLastTradePrice(
-            tradesArr.length > 0 ? Number(tradesArr[0].price) : null
-          );
-        });
-      }
-    );
+    getPropertyTrades(property.id).then((data: any) => {
+      let tradesArr = Array.isArray(data.trades) ? data.trades : data;
+      setRecentTrades(tradesArr);
+      console.log("DEBUG: tradesArr", tradesArr);
+      setLastTradePrice(
+        tradesArr.length > 0 ? Number(tradesArr[0].price) : null
+      );
+    });
+    // unsubscribeTrades = subscribeToTrades(property.id, (data: any) => { // This function is no longer imported
+    //   let tradesArr = Array.isArray(data.trades) ? data.trades : data;
+    //   setRecentTrades(tradesArr);
+    //   console.log("DEBUG: tradesArr", tradesArr);
+    //   setLastTradePrice(
+    //     tradesArr.length > 0 ? Number(tradesArr[0].price) : null
+    //   );
+    // });
     return () => {
-      if (unsubscribeOrderBook) unsubscribeOrderBook();
-      if (unsubscribeTrades) unsubscribeTrades && unsubscribeTrades();
+      // if (unsubscribeOrderBook) unsubscribeOrderBook(); // This function is no longer imported
+      // if (unsubscribeTrades) unsubscribeTrades && unsubscribeTrades(); // This function is no longer imported
     };
   }, [property]);
 
@@ -229,63 +273,21 @@ export const PropertyDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (property?.status === "trading" && property.id) {
-      fetch(`/api/market/${property.id}/summary`)
+      fetch(`/api/orders/property/${property.id}`)
         .then((res) => res.json())
-        .then((data) =>
-          setMarketSummary({ bestBid: data.bestBid, lastTrade: data.lastTrade })
-        );
+        .then((data) => {
+          console.log("Market summary for", property.id, data);
+          setMarketSummary({
+            bestBid:
+              data.bids && data.bids.length > 0
+                ? Number(data.bids[0].price)
+                : null,
+            lastTrade: null,
+          });
+        })
+        .catch(() => {});
     }
   }, [property?.id, property?.status]);
-
-  // Build token price history from recent trades, only the first trade of each quarter (for background bars)
-  const chartDataFirstOfQuarter = React.useMemo(() => {
-    if (!recentTrades || recentTrades.length === 0) return [];
-    // Helper to get quarter label
-    const getQuarterLabel = (date: Date) => {
-      const year = date.getFullYear();
-      const month = date.getMonth();
-      const quarter = Math.floor(month / 3) + 1;
-      return `Q${quarter} ${year}`;
-    };
-    // Group by quarter, keep only the first trade in each quarter
-    const grouped: {
-      [quarter: string]: { quarter: string; date: Date; price: number };
-    } = {};
-    recentTrades.forEach((trade: any) => {
-      const date = new Date(trade.timestamp);
-      const quarter = getQuarterLabel(date);
-      if (!grouped[quarter] || date < grouped[quarter].date) {
-        grouped[quarter] = { quarter, date, price: Number(trade.price) };
-      }
-    });
-    // Sort by date ascending
-    return Object.values(grouped).sort(
-      (a, b) => a.date.getTime() - b.date.getTime()
-    );
-  }, [recentTrades]);
-
-  // Build token price history from recent trades, grouped by quarter for axis, but plot all trades as points
-  const chartDataDetailed = React.useMemo(() => {
-    if (!recentTrades || recentTrades.length === 0) return [];
-    // Helper to get quarter label
-    const getQuarterLabel = (date: Date) => {
-      const year = date.getFullYear();
-      const month = date.getMonth();
-      const quarter = Math.floor(month / 3) + 1;
-      return `Q${quarter} ${year}`;
-    };
-    // Map each trade to its quarter label
-    return recentTrades
-      .map((trade: any) => {
-        const date = new Date(trade.timestamp);
-        return {
-          quarter: getQuarterLabel(date),
-          date: date,
-          price: Number(trade.price),
-        };
-      })
-      .sort((a, b) => a.date.getTime() - b.date.getTime());
-  }, [recentTrades]);
 
   // The TradingInterface orderData: { type, orderType, quantity, price?, total }
   const handlePlaceOrder = async (orderData: any): Promise<void> => {
@@ -297,25 +299,25 @@ export const PropertyDetailPage: React.FC = () => {
     setOrderError(null);
     setOrderSuccess(null);
     try {
-      const fullOrderData: OrderRequest = {
+      // Create order using the new API
+      const orderRequest = {
         property_id: property.id,
-        user_id: user.fullName || user.username || user.id,
         side: orderData.type,
+        amount: orderData.quantity,
         price:
           orderData.orderType === "market"
-            ? bestAsk || bestBid || property.currentTokenValue || 42.8
+            ? bestAsk || bestBid || property.currentTokenValue || 1000
             : orderData.price,
-        amount: orderData.quantity,
       };
-      const response: OrderResponse = await placeOrder(fullOrderData);
-      if (response.status === "filled") {
+
+      const response = await createOrder(user.id, orderRequest);
+
+      if (response.success) {
         setOrderSuccess(
-          `Order placed successfully! ${orderData.type === "buy" ? "Bought" : "Sold"} ${orderData.quantity} tokens.`
+          `Order placed successfully! ${orderData.type === "buy" ? "Bought" : "Sold"} ${orderData.quantity} tokens. Order ID: ${response.order_id}`
         );
       } else {
-        setOrderSuccess(
-          `Order placed and is ${response.status}. Order ID: ${response.orderId}`
-        );
+        setOrderError(response.message || "Failed to place order");
       }
     } catch (error) {
       setOrderError(
@@ -323,6 +325,44 @@ export const PropertyDetailPage: React.FC = () => {
       );
     }
   };
+
+  if (isLoadingProperty) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+        <Nav />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center">
+          <h1 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-4">
+            Loading Property...
+          </h1>
+          <div className="text-gray-600 dark:text-gray-400">
+            Please wait while we fetch the property details.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (propertyError) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+        <Nav />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center">
+          <h1 className="text-2xl font-light text-red-600 dark:text-red-400 mb-4">
+            Error Loading Property
+          </h1>
+          <div className="text-gray-600 dark:text-gray-400 mb-6">
+            {propertyError}
+          </div>
+          <button
+            onClick={() => navigate("/demo-platform")}
+            className="bg-black dark:bg-white text-white dark:text-black px-6 py-3 rounded-lg font-light hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors duration-300"
+          >
+            Back to Properties
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!property) {
     return (
@@ -356,29 +396,38 @@ export const PropertyDetailPage: React.FC = () => {
     return new Intl.NumberFormat("de-DE").format(num);
   };
 
-  const getFundingPercentage = (raised: number, target: number) => {
-    return Math.round((raised / target) * 100);
+  const getFundingPercentage = (
+    raised: number | string,
+    target: number | string
+  ) => {
+    const raisedNum = Number(raised);
+    const targetNum = Number(target);
+    if (isNaN(raisedNum) || isNaN(targetNum) || targetNum === 0) return 0;
+    return Math.round((raisedNum / targetNum) * 100);
   };
 
   // Calculate property value and annual yield based on property status
   let displayPropertyValue = 0;
   let displayAnnualYield = 0;
   if (property.status === "funding") {
-    displayPropertyValue = property.price;
-    displayAnnualYield = property.yield;
+    // For funding properties, use market value if available, otherwise fall back to price
+    displayPropertyValue = property.marketValue
+      ? Number(property.marketValue)
+      : Number(property.price);
+    displayAnnualYield = Number(property.yield);
   } else {
     // Trading: use calculated values
     const currentTokenValue = property
       ? bestBid !== null
         ? bestBid
-        : property.currentTokenValue || 0
+        : Number(property.currentTokenValue) || 0
       : 0;
     displayPropertyValue = property
-      ? currentTokenValue * property.totalTokens
+      ? currentTokenValue * Number(property.totalTokens)
       : 0;
     displayAnnualYield =
       displayPropertyValue > 0 && property && property.monthlyRent !== undefined
-        ? ((property.monthlyRent * 12) / displayPropertyValue) * 100
+        ? ((Number(property.monthlyRent) * 12) / displayPropertyValue) * 100
         : 0;
   }
 
@@ -393,22 +442,24 @@ export const PropertyDetailPage: React.FC = () => {
     } else if (typeof lastTradePrice === "number" && !isNaN(lastTradePrice)) {
       tokenPrice = lastTradePrice;
       tokenPriceSource = "Last traded price";
-    } else if (property.currentTokenValue) {
-      tokenPrice = property.currentTokenValue;
+    } else if (
+      Number(property.currentTokenValue) !== undefined &&
+      !isNaN(Number(property.currentTokenValue))
+    ) {
+      tokenPrice = Number(property.currentTokenValue);
       tokenPriceSource = "Default token value";
     } else {
-      tokenPrice = property.price / property.totalTokens;
+      tokenPrice = Number(property.price) / Number(property.totalTokens);
       tokenPriceSource = "Original token price";
     }
   } else {
     // Funding: always use original token price
-    tokenPrice = property.price / property.totalTokens;
+    tokenPrice = Number(property.price) / Number(property.totalTokens);
     tokenPriceSource = "Original token price";
   }
 
   // --- New Investment Calculator State ---
-  const [tokenInput, setTokenInput] = useState(1);
-  const maxTokens = property ? property.totalTokens : 1;
+  const maxTokens = property ? Number(property.totalTokens) : 1;
   const minTokens = 1;
   const sanitizedTokenInput = Math.max(
     minTokens,
@@ -419,23 +470,26 @@ export const PropertyDetailPage: React.FC = () => {
   // Monthly return: (monthlyRent / totalTokens) * tokensToBuy
   const calculateMonthlyReturn = (tokensToBuy: number) => {
     if (!property || property.monthlyRent === undefined) return 0;
-    return (property.monthlyRent / property.totalTokens) * tokensToBuy;
+    return (
+      (Number(property.monthlyRent) / Number(property.totalTokens)) *
+      tokensToBuy
+    );
   };
 
   // Calculate property value based on current market value (bestBid) and total tokens
   const currentTokenValue = property
     ? bestBid !== null
       ? bestBid
-      : property.currentTokenValue || 0
+      : Number(property.currentTokenValue) || 0
     : 0;
   const propertyMarketValue = property
-    ? currentTokenValue * property.totalTokens
+    ? currentTokenValue * Number(property.totalTokens)
     : 0;
 
   // Calculate annual yield as (monthlyRent * 12) / propertyMarketValue * 100
   const calculatedAnnualYield =
     propertyMarketValue > 0 && property && property.monthlyRent !== undefined
-      ? ((property.monthlyRent * 12) / propertyMarketValue) * 100
+      ? ((Number(property.monthlyRent) * 12) / propertyMarketValue) * 100
       : 0;
 
   return (
@@ -626,16 +680,45 @@ export const PropertyDetailPage: React.FC = () => {
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <p className="text-3xl font-light text-gray-900 dark:text-gray-100 mb-2">
-                    {formatPrice(displayPropertyValue)}
-                  </p>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Property Value
-                  </p>
+                  {property.status === "trading" ? (
+                    <div>
+                      <div className="mb-2">
+                        <p className="text-2xl font-light text-gray-600 dark:text-gray-400 mb-1">
+                          Market Value
+                        </p>
+                        <p className="text-3xl font-light text-gray-900 dark:text-gray-100">
+                          {property.marketValue
+                            ? formatPrice(Number(property.marketValue))
+                            : formatPrice(Number(property.price))}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-2xl font-light text-gray-600 dark:text-gray-400 mb-1">
+                          Platform Value
+                        </p>
+                        <p className="text-3xl font-light text-gray-900 dark:text-gray-100">
+                          {formatPrice(displayPropertyValue)}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-3xl font-light text-gray-900 dark:text-gray-100 mb-2">
+                        {formatPrice(displayPropertyValue)}
+                      </p>
+                      <p className="text-gray-600 dark:text-gray-400">
+                        Property Value
+                      </p>
+                    </>
+                  )}
                 </div>
                 <div className="text-right">
                   <p className="text-2xl font-light text-green-600 dark:text-green-400 mb-2">
-                    {displayAnnualYield.toFixed(1)}%
+                    {typeof displayAnnualYield === "number" &&
+                    !isNaN(displayAnnualYield)
+                      ? displayAnnualYield.toFixed(1)
+                      : "0.0"}
+                    %
                   </p>
                   <p className="text-gray-600 dark:text-gray-400">
                     Annual Yield
@@ -667,8 +750,8 @@ export const PropertyDetailPage: React.FC = () => {
                       ></div>
                     </div>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                      {formatPrice(property.capitalRaised)} /{" "}
-                      {formatPrice(property.targetCapital)}
+                      {formatPrice(Number(property.capitalRaised))} /{" "}
+                      {formatPrice(Number(property.targetCapital))}
                     </p>
                   </div>
                 )}
@@ -722,90 +805,48 @@ export const PropertyDetailPage: React.FC = () => {
               <>
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
                   <h3 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-6">
-                    Token Price History
+                    {recentTrades && recentTrades.length > 0
+                      ? "Recent Trade Prices"
+                      : "Token Price"}
                   </h3>
                   <div className="h-64 mb-4">
-                    {recentTrades && recentTrades.length > 0 ? (
-                      <Plot
-                        data={[
-                          {
-                            x: recentTrades.map(
-                              (trade: any) => new Date(trade.timestamp)
-                            ),
-                            y: recentTrades.map((trade: any) =>
-                              Number(trade.price)
-                            ),
-                            type: "scatter",
-                            mode: "lines+markers",
-                            marker: { color: "#059669" },
-                            line: { color: "#059669", width: 3 },
-                            name: "Token Price",
-                          },
-                        ]}
-                        layout={{
-                          autosize: true,
-                          height: 240,
-                          margin: { l: 40, r: 20, t: 10, b: 40 },
-                          paper_bgcolor: "rgba(0,0,0,0)",
-                          plot_bgcolor: "rgba(0,0,0,0)",
-                          xaxis: {
-                            title: "",
-                            tickformat: "%b %Y",
-                            color: "#6B7280",
-                            gridcolor: "#374151",
-                          },
-                          yaxis: {
-                            title: "",
-                            color: "#6B7280",
-                            gridcolor: "#374151",
-                          },
-                          font: { color: "#6B7280" },
-                          showlegend: false,
-                          hovermode: "closest",
-                        }}
-                        config={{ displayModeBar: false, responsive: true }}
-                        style={{ width: "100%", height: "100%" }}
-                      />
-                    ) : (
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={tokenPriceHistory}>
-                          <CartesianGrid
-                            strokeDasharray="3 3"
-                            stroke="#374151"
-                          />
-                          <XAxis
-                            dataKey="month"
-                            stroke="#6B7280"
-                            tick={{ fill: "#6B7280", fontSize: 12 }}
-                          />
-                          <YAxis
-                            stroke="#6B7280"
-                            tick={{ fill: "#6B7280", fontSize: 12 }}
-                            domain={["dataMin - 1", "dataMax + 1"]}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              backgroundColor: "#1F2937",
-                              border: "none",
-                              borderRadius: "0.5rem",
-                              color: "#F3F4F6",
-                            }}
-                            formatter={(value: number) => [
-                              `€${value.toFixed(2)}`,
-                              "Token Price",
-                            ]}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="price"
-                            stroke="#059669"
-                            strokeWidth={3}
-                            dot={{ fill: "#059669", strokeWidth: 2, r: 4 }}
-                            activeDot={{ r: 6, fill: "#059669" }}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    )}
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart
+                        data={generateChartData(recentTrades, property)}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                        <XAxis
+                          dataKey="label"
+                          stroke="#6B7280"
+                          tick={{ fill: "#6B7280", fontSize: 12 }}
+                        />
+                        <YAxis
+                          stroke="#6B7280"
+                          tick={{ fill: "#6B7280", fontSize: 12 }}
+                          domain={["dataMin - 1", "dataMax + 1"]}
+                        />
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: "#1F2937",
+                            border: "none",
+                            borderRadius: "0.5rem",
+                            color: "#F3F4F6",
+                          }}
+                          formatter={(value: number) => [
+                            `€${value.toFixed(2)}`,
+                            "Token Price",
+                          ]}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="price"
+                          stroke="#059669"
+                          strokeWidth={3}
+                          dot={{ fill: "#059669", strokeWidth: 2, r: 4 }}
+                          activeDot={{ r: 6, fill: "#059669" }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
                   </div>
                   <div className="text-center">
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
@@ -989,24 +1030,24 @@ export const PropertyDetailPage: React.FC = () => {
                     Monthly Rent
                   </span>
                   <span className="text-gray-900 dark:text-gray-100 font-light">
-                    {formatPrice(property.monthlyRent ?? 0)}
+                    {formatPrice(Number(property.monthlyRent ?? 0))}
                   </span>
                 </div>
-                <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-700">
+                <div className="flex justify-between items-center">
                   <span className="text-gray-600 dark:text-gray-400">
-                    Property Tax (Monthly)
+                    Property Tax
                   </span>
                   <span className="text-gray-900 dark:text-gray-100 font-light">
-                    €{formatNumber(property.propertyTax ?? 0)}
+                    €{formatNumber(Number(property.propertyTax ?? 0))}
                   </span>
                 </div>
-                {property.hoa && property.hoa > 0 && (
-                  <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-700">
+                {property.hoa && Number(property.hoa) > 0 && (
+                  <div className="flex justify-between items-center">
                     <span className="text-gray-600 dark:text-gray-400">
                       HOA Fees
                     </span>
                     <span className="text-gray-900 dark:text-gray-100 font-light">
-                      €{formatNumber(property.hoa ?? 0)}
+                      €{formatNumber(Number(property.hoa ?? 0))}
                     </span>
                   </div>
                 )}
