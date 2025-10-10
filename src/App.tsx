@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { ResourcesPage } from "./pages/ResourcesPage";
+import { AboutUsPage } from "./pages/AboutUsPage";
 
 const App: React.FC = () => {
   const initialized = useRef(false);
@@ -47,6 +48,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/resources" element={<ResourcesPage />} />
+            <Route path="/about" element={<AboutUsPage />} />
           </Routes>
         </div>
       </Router>

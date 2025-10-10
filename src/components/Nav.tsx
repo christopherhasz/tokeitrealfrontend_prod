@@ -141,6 +141,14 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
                 Resources
               </button>
 
+              <button
+                onClick={() => navigate("/about")}
+                className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-base
+                         ${location.pathname === "/about" ? "text-gray-900 dark:text-white" : ""}`}
+              >
+                About Us
+              </button>
+
               <a
                 href="https://www.linkedin.com/company/tokeitreal/"
                 target="_blank"
@@ -195,6 +203,13 @@ export const Nav: React.FC<NavProps> = ({ showContact = false }) => {
                        ${location.pathname === "/resources" ? "text-gray-900 dark:text-white" : ""}`}
             >
               Resources
+            </button>
+            <button
+              onClick={() => navigate("/about")}
+              className={`text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 font-light text-sm
+                       ${location.pathname === "/about" ? "text-gray-900 dark:text-white" : ""}`}
+            >
+              About Us
             </button>
             <a
               href="https://www.linkedin.com/company/tokeitreal/"
