@@ -87,7 +87,7 @@ export const AboutUsPage: React.FC = () => {
                   className="w-full rounded-xl shadow-lg"
                 />
                 <div className="absolute -bottom-4 -right-4 bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-lg">
-                  <p className="text-sm font-medium">Co-Founders</p>
+                  <p className="text-sm font-medium">Founders</p>
                 </div>
               </div>
             </div>
