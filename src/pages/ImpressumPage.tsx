@@ -15,8 +15,8 @@ export const ImpressumPage: React.FC = () => {
       legalInfo: 'Angaben gemäß § 5 TMG',
       name: 'Christopher Haß',
       activity: 'Projektinhaber TokeItReal',
-      address: '[Postanschrift oder ladungsfähige Adresse – erforderlich nach TMG]',
-      email: '[z. B. kontakt@tokeitreal.com]',
+      address: 'Waldstraße 21, 15345 Altlandsberg',
+      email: 'info@tokeitreal.com',
       legalStatusTitle: 'Hinweis zum rechtlichen Status',
       legalStatusText: [
         'Bei TokeItReal handelt es sich derzeit nicht um ein Unternehmen im Sinne des Handelsrechts.',
@@ -45,8 +45,8 @@ export const ImpressumPage: React.FC = () => {
       legalInfo: 'Information according to § 5 TMG',
       name: 'Christopher Haß',
       activity: 'Project Owner TokeItReal',
-      address: '[Postal address or legal address – required by TMG]',
-      email: '[e.g. kontakt@tokeitreal.com]',
+      address: 'Waldstraße 21, 15345 Altlandsberg',
+      email: 'info@tokeitreal.com',
       legalStatusTitle: 'Note on Legal Status',
       legalStatusText: [
         'TokeItReal is currently not a company within the meaning of commercial law.',
