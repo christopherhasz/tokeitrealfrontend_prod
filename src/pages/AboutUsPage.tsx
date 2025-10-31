@@ -54,10 +54,10 @@ export const AboutUsPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-light text-gray-900 dark:text-gray-100 mb-6">
+          <h1 className="text-3xl md:text-5xl font-light text-gray-900 dark:text-gray-100 mb-6">
             About Us
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             Meet the visionaries behind TokeItReal's mission to democratize real estate investment
           </p>
         </div>
@@ -67,16 +67,16 @@ export const AboutUsPage: React.FC = () => {
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8 md:p-12">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-3xl font-light text-gray-900 dark:text-gray-100 mb-6">
+                <h2 className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100 mb-6">
                   Our Vision
                 </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
                   We founded TokeItReal with a simple yet powerful vision: to transform the traditional real estate market from an exclusive playground for the wealthy into an accessible investment opportunity for everyone.
                 </p>
-                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
                   Having witnessed firsthand the barriers that prevent ordinary people from participating in real estate investment, we saw an opportunity to leverage blockchain technology and tokenization to break down these walls.
                 </p>
-                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
                   Our combined expertise in project management, architecture, and real estate, enhanced by our network of strategic partners and mentors, positions us uniquely to revolutionize this €164 trillion market.
                 </p>
               </div>
@@ -96,7 +96,7 @@ export const AboutUsPage: React.FC = () => {
 
         {/* Founders */}
         <div className="mb-20">
-          <h2 className="text-3xl font-light text-gray-900 dark:text-gray-100 text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100 text-center mb-12">
             Meet the Founders
           </h2>
           <div className="grid md:grid-cols-2 gap-12">
@@ -112,10 +112,10 @@ export const AboutUsPage: React.FC = () => {
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-2">
+                      <h3 className="text-xl md:text-2xl font-light text-gray-900 dark:text-gray-100 mb-2">
                         {founder.name}
                       </h3>
-                      <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
+                      <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 mb-4">
                         {founder.position}
                       </p>
                       <div className="flex flex-wrap gap-2">
@@ -130,7 +130,7 @@ export const AboutUsPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                     {founder.description}
                   </p>
                 </div>
@@ -141,7 +141,7 @@ export const AboutUsPage: React.FC = () => {
 
         {/* Our Values */}
         <div className="mb-20">
-          <h2 className="text-3xl font-light text-gray-900 dark:text-gray-100 text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100 text-center mb-12">
             Our Values
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -156,7 +156,7 @@ export const AboutUsPage: React.FC = () => {
                 <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-3">
                   {value.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
                   {value.description}
                 </p>
               </div>
@@ -167,7 +167,7 @@ export const AboutUsPage: React.FC = () => {
         {/* Our Approach */}
         <div className="mb-20">
           <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8 md:p-12">
-            <h2 className="text-3xl font-light text-gray-900 dark:text-gray-100 text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100 text-center mb-8">
               Our Approach
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
@@ -178,7 +178,7 @@ export const AboutUsPage: React.FC = () => {
                 <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-3">
                   AI-First Principle
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
                   We leverage artificial intelligence to automate complex processes and data analysis, making our platform more efficient and accessible.
                 </p>
               </div>
@@ -189,7 +189,7 @@ export const AboutUsPage: React.FC = () => {
                 <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-3">
                   Expert Network
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
                   Our strategic partnerships with industry experts, including FIBREE network and academic mentors, ensure professional excellence.
                 </p>
               </div>
@@ -200,7 +200,7 @@ export const AboutUsPage: React.FC = () => {
                 <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-3">
                   Community Focus
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
                   We believe in building a community of investors who can participate in the real estate market regardless of their financial background.
                 </p>
               </div>
@@ -211,10 +211,10 @@ export const AboutUsPage: React.FC = () => {
         {/* Call to Action */}
         <div className="text-center">
           <div className="bg-black dark:bg-white text-white dark:text-black rounded-2xl p-8 md:p-12">
-            <h2 className="text-3xl font-light mb-6">
+            <h2 className="text-2xl md:text-3xl font-light mb-6">
               Join Us on This Journey
             </h2>
-            <p className="text-xl mb-8 opacity-90">
+            <p className="text-lg md:text-xl mb-8 opacity-90">
               Together, we're building the future of real estate investment
             </p>
             <a
