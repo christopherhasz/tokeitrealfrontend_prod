@@ -37,7 +37,19 @@ export const HomePage: React.FC = () => {
         'TokeItReal is currently in the development and concept phase.',
         'Legally binding activity will only take place after the establishment of a corresponding company and compliance with all legal licensing and information obligations.',
         'Despite careful content control, we assume no liability for the accuracy, completeness and timeliness of the information presented. Any liability for damages arising directly or indirectly from the use of this website is excluded, unless based on intent or gross negligence.'
-      ]
+      ],
+      // Hero Section
+      heroTitle1: 'Tokenized',
+      heroTitle2: 'rights on',
+      heroTitle3: 'Real Estate',
+      heroSubtitle: 'Invest in fully managed properties from 1 €',
+      // Features
+      feature1Title: 'Holistic Approach for Tokenized Real Estate',
+      feature1Description: 'Experience a comprehensive solution that transforms traditional real estate into digital tokens, making property investment more accessible and efficient.',
+      feature2Title: 'Buy and Trade Fractions of Real Estate',
+      feature2Description: 'Invest in premium properties with minimal capital through fractional ownership, and trade your tokens easily on our secure platform.',
+      feature3Title: 'Managed Real Estate by Professionals',
+      feature3Description: 'Leave the complexities to us. Our team of experts handles property management, maintenance, and tenant relations while you focus on your investment.'
     },
     de: {
       legalTitle: 'Rechtlicher Hinweis (Disclaimer)',
@@ -49,7 +61,19 @@ export const HomePage: React.FC = () => {
         'TokeItReal befindet sich derzeit in der Entwicklungs- und Konzeptphase.',
         'Eine rechtlich verbindliche Tätigkeit erfolgt erst nach Gründung einer entsprechenden Gesellschaft und Einhaltung sämtlicher gesetzlicher Zulassungs- und Informationspflichten.',
         'Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Gewähr für Richtigkeit, Vollständigkeit und Aktualität der dargestellten Informationen. Jegliche Haftung für Schäden, die direkt oder indirekt aus der Nutzung dieser Website entstehen, ist ausgeschlossen, soweit sie nicht auf Vorsatz oder grober Fahrlässigkeit beruhen.'
-      ]
+      ],
+      // Hero Section
+      heroTitle1: 'Tokenisierte',
+      heroTitle2: 'Rechte an',
+      heroTitle3: 'Immobilien',
+      heroSubtitle: 'Investieren Sie in vollständig verwaltete Immobilien ab 1 €',
+      // Features
+      feature1Title: 'Ganzheitlicher Ansatz für tokenisierte Immobilien',
+      feature1Description: 'Erleben Sie eine umfassende Lösung, die traditionelle Immobilien in digitale Token verwandelt und Immobilieninvestitionen zugänglicher und effizienter macht.',
+      feature2Title: 'Kaufen und handeln Sie Immobilienanteile',
+      feature2Description: 'Investieren Sie mit minimalem Kapital in Premium-Immobilien durch Bruchteilseigentum und handeln Sie Ihre Token einfach auf unserer sicheren Plattform.',
+      feature3Title: 'Professionell verwaltete Immobilien',
+      feature3Description: 'Überlassen Sie uns die Komplexität. Unser Expertenteam kümmert sich um Immobilienverwaltung, Wartung und Mieterbeziehungen, während Sie sich auf Ihre Investition konzentrieren.'
     }
   };
 
@@ -88,7 +112,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         <section id="home">
-          <Hero />
+          <Hero language={language} content={currentContent} />
           <HolisticApproachSection />
           <TradingSection />
           <ManagementSection />

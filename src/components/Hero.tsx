@@ -1,11 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  language?: 'de' | 'en';
+  content?: {
+    heroTitle1: string;
+    heroTitle2: string;
+    heroTitle3: string;
+    heroSubtitle: string;
+    feature1Title: string;
+    feature1Description: string;
+    feature2Title: string;
+    feature2Description: string;
+    feature3Title: string;
+    feature3Description: string;
+  };
+}
+
+export const Hero: React.FC<HeroProps> = ({ language = 'en', content }) => {
   const [showLogo, setShowLogo] = useState(false);
   const [showFirstText, setShowFirstText] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
   const { isDark } = useTheme();
+
+  // Default content if none provided
+  const defaultContent = {
+    heroTitle1: 'Tokenized',
+    heroTitle2: 'rights on',
+    heroTitle3: 'Real Estate',
+    heroSubtitle: 'Invest in fully managed properties from 1 €',
+    feature1Title: 'Holistic Approach for Tokenized Real Estate',
+    feature1Description: 'Experience a comprehensive solution that transforms traditional real estate into digital tokens, making property investment more accessible and efficient.',
+    feature2Title: 'Buy and Trade Fractions of Real Estate',
+    feature2Description: 'Invest in premium properties with minimal capital through fractional ownership, and trade your tokens easily on our secure platform.',
+    feature3Title: 'Managed Real Estate by Professionals',
+    feature3Description: 'Leave the complexities to us. Our team of experts handles property management, maintenance, and tenant relations while you focus on your investment.'
+  };
+
+  const displayContent = content || defaultContent;
 
   useEffect(() => {
     const logoTimer = setTimeout(() => {
@@ -45,17 +77,17 @@ export const Hero: React.FC = () => {
             className={`opacity-0 space-y-8 md:space-y-4 ${showFirstText ? 'animate-fade-in' : ''}`}
           >
             <div className="text-3xl md:text-4xl flex flex-col md:flex-row justify-center items-center gap-2">
-              <strong className="text-black dark:text-white">Tokenized</strong>
-              <span className="text-black dark:text-white md:inline">rights on</span>
-              <strong className="text-black dark:text-white">Real Estate</strong>
+              <strong className="text-black dark:text-white">{displayContent.heroTitle1}</strong>
+              <span className="text-black dark:text-white md:inline">{displayContent.heroTitle2}</span>
+              <strong className="text-black dark:text-white">{displayContent.heroTitle3}</strong>
             </div>
             {/* Mobile version - single line with smaller text */}
             <p className="md:hidden text-lg text-gray-500 dark:text-gray-400 font-light whitespace-nowrap">
-              Invest in fully managed properties from 1 €
+              {displayContent.heroSubtitle}
             </p>
             {/* Desktop version - original size */}
             <p className="hidden md:block text-xl md:text-2xl text-gray-500 dark:text-gray-400 font-light">
-              Invest in fully managed properties from 1 €
+              {displayContent.heroSubtitle}
             </p>
           </div>
 
@@ -67,28 +99,28 @@ export const Hero: React.FC = () => {
               <div className="flex space-x-2 px-4" style={{ width: 'max-content', paddingRight: 'calc(100vw - 92vw - 16px)' }}>
                 <div className="w-[75vw] flex-shrink-0 p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm hover:border-gray-300 dark:hover:border-gray-600 transition-colors duration-300">
                   <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-2">
-                    Holistic Approach for Tokenized Real Estate
+                    {displayContent.feature1Title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Experience a comprehensive solution that transforms traditional real estate into digital tokens, making property investment more accessible and efficient.
+                    {displayContent.feature1Description}
                   </p>
                 </div>
 
                 <div className="w-[75vw] flex-shrink-0 p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm hover:border-gray-300 dark:hover:border-gray-600 transition-colors duration-300">
                   <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-2">
-                    Buy and Trade Fractions of Real Estate
+                    {displayContent.feature2Title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Invest in premium properties with minimal capital through fractional ownership, and trade your tokens easily on our secure platform.
+                    {displayContent.feature2Description}
                   </p>
                 </div>
 
                 <div className="w-[75vw] flex-shrink-0 p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm hover:border-gray-300 dark:hover:border-gray-600 transition-colors duration-300">
                   <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-2">
-                    Managed Real Estate by Professionals
+                    {displayContent.feature3Title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Leave the complexities to us. Our team of experts handles property management, maintenance, and tenant relations while you focus on your investment.
+                    {displayContent.feature3Description}
                   </p>
                 </div>
               </div>
@@ -98,28 +130,28 @@ export const Hero: React.FC = () => {
             <div className="hidden md:grid md:grid-cols-3 gap-12">
               <div className="p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm hover:border-gray-300 dark:hover:border-gray-600 transition-colors duration-300">
                 <h3 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-2 md:mb-3">
-                  Holistic Approach for Tokenized Real Estate
+                  {displayContent.feature1Title}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  Experience a comprehensive solution that transforms traditional real estate into digital tokens, making property investment more accessible and efficient.
+                  {displayContent.feature1Description}
                 </p>
               </div>
 
               <div className="p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm hover:border-gray-300 dark:hover:border-gray-600 transition-colors duration-300">
                 <h3 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-2 md:mb-3">
-                  Buy and Trade Fractions of Real Estate
+                  {displayContent.feature2Title}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  Invest in premium properties with minimal capital through fractional ownership, and trade your tokens easily on our secure platform.
+                  {displayContent.feature2Description}
                 </p>
               </div>
 
               <div className="p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm hover:border-gray-300 dark:hover:border-gray-600 transition-colors duration-300">
                 <h3 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-2 md:mb-3">
-                  Managed Real Estate by Professionals
+                  {displayContent.feature3Title}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  Leave the complexities to us. Our team of experts handles property management, maintenance, and tenant relations while you focus on your investment.
+                  {displayContent.feature3Description}
                 </p>
               </div>
             </div>
