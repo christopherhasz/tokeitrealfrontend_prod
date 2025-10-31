@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { ResourcesPage } from "./pages/ResourcesPage";
 import { AboutUsPage } from "./pages/AboutUsPage";
+import { ImpressumPage } from "./pages/ImpressumPage";
 
 const App: React.FC = () => {
   const initialized = useRef(false);
@@ -49,6 +50,7 @@ const App: React.FC = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/resources" element={<ResourcesPage />} />
             <Route path="/about" element={<AboutUsPage />} />
+            <Route path="/impressum" element={<ImpressumPage />} />
           </Routes>
         </div>
       </Router>
