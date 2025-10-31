@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Nav } from '../components/Nav';
 import { Building2, Users, Target, Lightbulb, Award, Globe } from 'lucide-react';
+import { LinkedInContact } from '../components/LinkedInContact';
 
 export const AboutUsPage: React.FC = () => {
   useEffect(() => {
@@ -230,6 +231,8 @@ export const AboutUsPage: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      <LinkedInContact />
     </div>
   );
 };

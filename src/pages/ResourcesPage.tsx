@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Download, FileText } from 'lucide-react';
 import { config, endpoints, logger } from '../config/environment';
 import { Nav } from '../components/Nav';
+import { LinkedInContact } from '../components/LinkedInContact';
 
 export const ResourcesPage: React.FC = () => {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -167,6 +168,8 @@ export const ResourcesPage: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      <LinkedInContact />
     </div>
   );
 };
