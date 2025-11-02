@@ -58,7 +58,21 @@ export const AboutUsPage: React.FC = () => {
       ],
       ctaTitle: 'Join Us on This Journey',
       ctaSubtitle: 'Together, we\'re building the future of real estate investment',
-      ctaButton: 'Connect with Us'
+      ctaButton: 'Connect with Us',
+      founders: [
+        {
+          name: 'Christopher Haß',
+          position: 'Co-Founder & CEO',
+          description: 'Christopher leads TokeItReal with extensive project management experience from Drees & Sommer, where he managed major construction projects including the revitalization of Tegel Airport and the Buckower Felder district development in Berlin-Neukölln. His technical expertise in 3D CAD and self-taught programming skills, combined with entrepreneurial experience from his family\'s business, provide the foundation for our platform development.',
+          expertise: ['Project Management', 'Technical Analysis', 'Platform Development', 'Strategic Planning']
+        },
+        {
+          name: 'Felix Behnke',
+          position: 'Co-Founder & CTO',
+          description: 'Felix brings deep architectural expertise and Real Estate Project Management knowledge to TokeItReal. His experience spans from architectural firms to construction sites, including work on high-value projects and complex developments like the Berlin Bundesrat. His year-long experience in Silicon Valley, California, adds valuable international perspective to our vision.',
+          expertise: ['Architecture', 'Real Estate Management', 'Network Building', 'International Markets']
+        }
+      ]
     },
     de: {
       title: 'Über Uns',
@@ -106,26 +120,25 @@ export const AboutUsPage: React.FC = () => {
       ],
       ctaTitle: 'Begleiten Sie uns auf dieser Reise',
       ctaSubtitle: 'Gemeinsam bauen wir die Zukunft der Immobilieninvestition',
-      ctaButton: 'Verbinden Sie sich mit uns'
+      ctaButton: 'Verbinden Sie sich mit uns',
+      founders: [
+        {
+          name: 'Christopher Haß',
+          position: 'Mitgründer & Geschäftsführer',
+          description: 'Christopher leitet TokeItReal mit umfangreicher Projektmanagement-Erfahrung von Drees & Sommer, wo er große Bauprojekte leitete, darunter die Revitalisierung des Flughafens Tegel und die Entwicklung des Bezirks Buckower Felder in Berlin-Neukölln. Seine technische Expertise in 3D CAD und selbst erlernte Programmierkenntnisse, kombiniert mit unternehmerischer Erfahrung aus dem Familienunternehmen, bilden die Grundlage für unsere Plattformentwicklung.',
+          expertise: ['Projektmanagement', 'Technische Analyse', 'Plattformentwicklung', 'Strategische Planung']
+        },
+        {
+          name: 'Felix Behnke',
+          position: 'Mitgründer & CTO',
+          description: 'Felix bringt tiefgreifendes architektonisches Fachwissen und Immobilien-Projektmanagement-Kenntnisse zu TokeItReal. Seine Erfahrung reicht von Architekturbüros bis zu Baustellen, einschließlich der Arbeit an hochwertigen Projekten und komplexen Entwicklungen wie dem Berliner Bundesrat. Seine einjährige Erfahrung im Silicon Valley, Kalifornien, verleiht unserer Vision eine wertvolle internationale Perspektive.',
+          expertise: ['Architektur', 'Immobilienverwaltung', 'Netzwerkaufbau', 'Internationale Märkte']
+        }
+      ]
     }
   };
 
-  const founders = [
-    {
-      name: 'Christopher Haß',
-      position: 'Co-Founder & CEO',
-      qrCode: '/assets/C.H._QR.png',
-      description: 'Christopher leads TokeItReal with extensive project management experience from Drees & Sommer, where he managed major construction projects including the revitalization of Tegel Airport and the Buckower Felder district development in Berlin-Neukölln. His technical expertise in 3D CAD and self-taught programming skills, combined with entrepreneurial experience from his family\'s business, provide the foundation for our platform development.',
-      expertise: ['Project Management', 'Technical Analysis', 'Platform Development', 'Strategic Planning']
-    },
-    {
-      name: 'Felix Behnke',
-      position: 'Co-Founder & CTO',
-      qrCode: '/assets/F.B._QR.png',
-      description: 'Felix brings deep architectural expertise and Real Estate Project Management knowledge to TokeItReal. His experience spans from architectural firms to construction sites, including work on high-value projects and complex developments like the Berlin Bundesrat. His year-long experience in Silicon Valley, California, adds valuable international perspective to our vision.',
-      expertise: ['Architecture', 'Real Estate Management', 'Network Building', 'International Markets']
-    }
-  ];
+  const qrCodes = ['/assets/C.H._QR.png', '/assets/F.B._QR.png'];
 
   const valueIcons = [Target, Building2, Users, Globe];
   const approachIcons = [Lightbulb, Award, Users];
@@ -209,13 +222,13 @@ export const AboutUsPage: React.FC = () => {
             {currentContent.foundersTitle}
           </h2>
           <div className="grid md:grid-cols-2 gap-12">
-            {founders.map((founder, index) => (
+            {currentContent.founders.map((founder, index) => (
               <div key={founder.name} className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
                 <div className="p-8">
                   <div className="flex items-start space-x-6 mb-6">
                     <div className="flex-shrink-0">
                       <img
-                        src={founder.qrCode}
+                        src={qrCodes[index]}
                         alt={`${founder.name} Contact QR Code`}
                         className="w-24 h-24 rounded-lg shadow-md"
                       />
