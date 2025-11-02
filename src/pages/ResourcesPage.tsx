@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Download, FileText, RotateCcw } from 'lucide-react';
+import { Download, FileText, RotateCcw, Globe } from 'lucide-react';
 import { config, endpoints, logger } from '../config/environment';
 import { Nav } from '../components/Nav';
 import { LinkedInContact } from '../components/LinkedInContact';
@@ -9,6 +9,7 @@ export const ResourcesPage: React.FC = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const resetConsentRef = React.useRef<(() => void) | null>(null);
+  const [language, setLanguage] = useState<'de' | 'en'>('en');
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -56,13 +57,48 @@ export const ResourcesPage: React.FC = () => {
     }
   };
 
+  const content = {
+    en: {
+      pageTitle: 'Resources',
+      pageSubtitle: "Learn more about TokeItReal's approach to tokenized real estate investment",
+      videoTitle: 'Introduction Video',
+      videoDescription: 'Watch our introduction video to understand how TokeItReal is revolutionizing real estate investment through tokenization.',
+      downloadTitle: 'Download Resources',
+      resourceTitle: 'TokeItReal Pitch Deck',
+      resourceDescription: 'A simplified overview of our approach to a tokenized real estate investment process. Presented at the Berlin Blockchain Week hosted by FIBREE at w3.hub.',
+      resourceSize: '1.1 MB',
+      resourcePages: '21 pages',
+      downloadButton: 'Download PDF',
+      downloading: 'Downloading...',
+      moreInfoTitle: 'Need More Information?',
+      moreInfoSubtitle: 'Contact us directly for additional resources or specific questions about our platform',
+      connectButton: 'Connect with Us',
+      cookieText: 'Need to change your cookie consent for YouTube videos?',
+      resetButton: 'Reset Cookie Consent'
+    },
+    de: {
+      pageTitle: 'Ressourcen',
+      pageSubtitle: 'Erfahren Sie mehr über TokeItReals Ansatz zur tokenisierten Immobilieninvestition',
+      videoTitle: 'Einführungsvideo',
+      videoDescription: 'Sehen Sie sich unser Einführungsvideo an, um zu verstehen, wie TokeItReal Immobilieninvestitionen durch Tokenisierung revolutioniert.',
+      downloadTitle: 'Ressourcen herunterladen',
+      resourceTitle: 'TokeItReal Pitch Deck',
+      resourceDescription: 'Eine vereinfachte Übersicht über unseren Ansatz für einen tokenisierten Immobilieninvestitionsprozess. Präsentiert bei der Berlin Blockchain Week, veranstaltet von FIBREE im w3.hub.',
+      resourceSize: '1,1 MB',
+      resourcePages: '21 Seiten',
+      downloadButton: 'PDF herunterladen',
+      downloading: 'Lädt herunter...',
+      moreInfoTitle: 'Benötigen Sie weitere Informationen?',
+      moreInfoSubtitle: 'Kontaktieren Sie uns direkt für zusätzliche Ressourcen oder spezifische Fragen zu unserer Plattform',
+      connectButton: 'Kontaktieren Sie uns',
+      cookieText: 'Müssen Sie Ihre Cookie-Einwilligung für YouTube-Videos ändern?',
+      resetButton: 'Cookie-Einwilligung zurücksetzen'
+    }
+  };
+
   const resource = {
     id: 'whitepaper',
-    title: 'TokeItReal Pitch Deck',
-    description: 'A simplified overview of our approach to a tokenized real estate investment process. Presented at the Berlin Blockchain Week hosted by FIBREE at w3.hub.',
-    icon: FileText,
-    size: '1.1 MB',
-    pages: '21 pages'
+    icon: FileText
   };
 
   return (
@@ -72,11 +108,39 @@ export const ResourcesPage: React.FC = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         <div className="text-center mb-16">
+          {/* Language Toggle */}
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+              <button
+                onClick={() => setLanguage('en')}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-300 ${
+                  language === 'en'
+                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                }`}
+              >
+                <Globe className="w-4 h-4" />
+                <span className="text-sm font-light">English</span>
+              </button>
+              <button
+                onClick={() => setLanguage('de')}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-300 ${
+                  language === 'de'
+                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                }`}
+              >
+                <Globe className="w-4 h-4" />
+                <span className="text-sm font-light">Deutsch</span>
+              </button>
+            </div>
+          </div>
+
           <h1 className="text-4xl md:text-5xl font-light text-gray-900 dark:text-gray-100 mb-6">
-            Resources
+            {content[language].pageTitle}
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            Learn more about TokeItReal's approach to tokenized real estate investment
+            {content[language].pageSubtitle}
           </p>
         </div>
 
@@ -85,7 +149,7 @@ export const ResourcesPage: React.FC = () => {
           {/* YouTube Video Section */}
           <div className="space-y-6">
             <h2 className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100">
-              Introduction Video
+              {content[language].videoTitle}
             </h2>
             <YouTubeVideoConsent
               videoId="ohZQlC_6yrs"
@@ -93,40 +157,40 @@ export const ResourcesPage: React.FC = () => {
               onResetAvailable={handleResetConsentAvailable}
             />
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              Watch our introduction video to understand how TokeItReal is revolutionizing real estate investment through tokenization.
+              {content[language].videoDescription}
             </p>
           </div>
 
           {/* Resource Download Section */}
           <div className="space-y-6">
             <h2 className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100">
-              Download Resources
+              {content[language].downloadTitle}
             </h2>
             <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <div className="p-8">
                 <div className="w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-900 flex items-center justify-center mb-6">
                   <resource.icon className="w-8 h-8 text-black dark:text-white" />
                 </div>
-                
+
                 <h3 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-4">
-                  {resource.title}
+                  {content[language].resourceTitle}
                 </h3>
-                
+
                 <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                  {resource.description}
+                  {content[language].resourceDescription}
                 </p>
-                
+
                 <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-6">
-                  <span>{resource.size}</span>
-                  <span>{resource.pages}</span>
+                  <span>{content[language].resourceSize}</span>
+                  <span>{content[language].resourcePages}</span>
                 </div>
-                
+
                 {downloadError && (
                   <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
                     <p className="text-red-600 dark:text-red-400 text-sm">{downloadError}</p>
                   </div>
                 )}
-                
+
                 <button
                   onClick={handleDownload}
                   disabled={isDownloading}
@@ -137,7 +201,7 @@ export const ResourcesPage: React.FC = () => {
                            disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
                 >
                   <Download className={`w-5 h-5 ${isDownloading ? 'animate-spin' : ''}`} />
-                  <span>{isDownloading ? 'Downloading...' : 'Download PDF'}</span>
+                  <span>{isDownloading ? content[language].downloading : content[language].downloadButton}</span>
                 </button>
               </div>
             </div>
@@ -148,10 +212,10 @@ export const ResourcesPage: React.FC = () => {
         <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8 md:p-12">
           <div className="text-center">
             <h2 className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100 mb-4">
-              Need More Information?
+              {content[language].moreInfoTitle}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-              Contact us directly for additional resources or specific questions about our platform
+              {content[language].moreInfoSubtitle}
             </p>
             <a
               href="https://www.linkedin.com/company/tokeitreal/"
@@ -161,7 +225,7 @@ export const ResourcesPage: React.FC = () => {
                        hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300
                        transform hover:scale-105 active:scale-95"
             >
-              Connect with Us
+              {content[language].connectButton}
             </a>
           </div>
         </div>
@@ -174,14 +238,14 @@ export const ResourcesPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Need to change your cookie consent for YouTube videos?
+              {content[language].cookieText}
             </p>
             <button
               onClick={() => resetConsentRef.current?.()}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-light text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
               <RotateCcw className="w-4 h-4" />
-              <span>Reset Cookie Consent</span>
+              <span>{content[language].resetButton}</span>
             </button>
           </div>
         </div>
