@@ -104,38 +104,38 @@ export const ResourcesPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       <Nav />
+
+      {/* Language Toggle - Fixed Position */}
+      <div className="fixed top-24 right-4 z-40">
+        <div className="flex items-center space-x-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-lg p-1 shadow-lg border border-gray-200 dark:border-gray-700">
+          <button
+            onClick={() => setLanguage('en')}
+            className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-all duration-300 text-sm ${
+              language === 'en'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-sm'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+            }`}
+          >
+            <Globe className="w-3 h-3" />
+            <span>EN</span>
+          </button>
+          <button
+            onClick={() => setLanguage('de')}
+            className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-all duration-300 text-sm ${
+              language === 'de'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-sm'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+            }`}
+          >
+            <Globe className="w-3 h-3" />
+            <span>DE</span>
+          </button>
+        </div>
+      </div>
       
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         <div className="text-center mb-16">
-          {/* Language Toggle */}
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-              <button
-                onClick={() => setLanguage('en')}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-300 ${
-                  language === 'en'
-                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
-                }`}
-              >
-                <Globe className="w-4 h-4" />
-                <span className="text-sm font-light">English</span>
-              </button>
-              <button
-                onClick={() => setLanguage('de')}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-300 ${
-                  language === 'de'
-                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
-                }`}
-              >
-                <Globe className="w-4 h-4" />
-                <span className="text-sm font-light">Deutsch</span>
-              </button>
-            </div>
-          </div>
-
           <h1 className="text-4xl md:text-5xl font-light text-gray-900 dark:text-gray-100 mb-6">
             {content[language].pageTitle}
           </h1>
