@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Cookie, Play, Shield } from 'lucide-react';
+import { Cookie, Play, Shield, RotateCcw } from 'lucide-react';
 
 interface YouTubeVideoConsentProps {
   videoId: string;
@@ -71,6 +71,16 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
     setShowConsentDialog(true);
   };
 
+  const handleReset = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      setHasConsent(null);
+      setShowConsentDialog(true);
+    } catch (error) {
+      console.error('Error resetting consent:', error);
+    }
+  };
+
   if (hasConsent === true) {
     return (
       <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
@@ -85,6 +95,13 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         />
+        <button
+          onClick={handleReset}
+          className="absolute top-4 right-4 p-2 rounded-lg bg-black/60 dark:bg-white/60 hover:bg-black/80 dark:hover:bg-white/80 transition-all duration-300 backdrop-blur-sm z-10"
+          title="Reset consent and reload dialog"
+        >
+          <RotateCcw className="w-4 h-4 text-white dark:text-black" />
+        </button>
       </div>
     );
   }
@@ -94,38 +111,38 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
       <div className="absolute top-0 left-0 w-full h-full rounded-xl shadow-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center overflow-hidden">
         {showConsentDialog ? (
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-10 animate-fade-in">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full shadow-2xl transform transition-all duration-300 scale-100">
-              <div className="flex items-center justify-center mb-6">
-                <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                  <Cookie className="w-8 h-8 text-gray-700 dark:text-gray-300" />
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-lg w-full shadow-2xl transform transition-all duration-300 scale-100">
+              <div className="flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                  <Cookie className="w-6 h-6 text-gray-700 dark:text-gray-300" />
                 </div>
               </div>
 
-              <h3 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-4 text-center">
+              <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-3 text-center">
                 Cookie Consent Required
               </h3>
 
-              <p className="text-gray-600 dark:text-gray-400 mb-6 text-center leading-relaxed">
-                To watch this video, we need to load content from YouTube, which may set cookies on your device. YouTube uses cookies to provide video playback and analyze usage.
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center leading-relaxed">
+                To watch this video, we need to load content from YouTube, which may set cookies on your device.
               </p>
 
-              <div className="flex items-center gap-3 mb-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <Shield className="w-5 h-5 text-gray-600 dark:text-gray-400 flex-shrink-0" />
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  We use youtube-nocookie.com for enhanced privacy protection
+              <div className="flex items-center gap-2 mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <Shield className="w-4 h-4 text-gray-600 dark:text-gray-400 flex-shrink-0" />
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  We use youtube-nocookie.com for enhanced privacy
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   onClick={handleDecline}
-                  className="flex-1 px-6 py-3 rounded-lg font-light text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  className="flex-1 px-4 py-2 rounded-lg text-sm font-light text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   Decline
                 </button>
                 <button
                   onClick={handleAccept}
-                  className="flex-1 px-6 py-3 rounded-lg font-light text-white dark:text-black bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  className="flex-1 px-4 py-2 rounded-lg text-sm font-light text-white dark:text-black bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   Accept & Load Video
                 </button>
