@@ -68,7 +68,7 @@ export const HomePage: React.FC = () => {
       heroTitle1: 'Tokenisierte',
       heroTitle2: 'Rechte an',
       heroTitle3: 'Immobilien',
-      heroSubtitle: 'Investieren Sie in vollständig verwaltete Immobilien ab 1 €',
+      heroSubtitle: 'Investieren Sie in verwaltete Immobilien ab 1 €',
       // Features
       feature1Title: 'Ganzheitlicher Ansatz für tokenisierte Immobilien',
       feature1Description: 'Erleben Sie eine umfassende Lösung, die traditionelle Immobilien in digitale Token verwandelt und Immobilieninvestitionen zugänglicher und effizienter macht.',
