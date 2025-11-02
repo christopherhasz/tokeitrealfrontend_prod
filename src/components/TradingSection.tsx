@@ -27,6 +27,25 @@ export const TradingSection: React.FC<TradingSectionProps> = ({ language = 'en' 
 
   const content = {
     en: {
+      performanceTitle: 'Property Market Performance',
+      benefitsTitle: 'Market Benefits',
+      benefits: [
+        {
+          icon: Users,
+          title: 'Increased Accessibility',
+          description: 'Start investing with as little as €1'
+        },
+        {
+          icon: ArrowRightLeft,
+          title: 'Enhanced Liquidity',
+          description: 'Trade tokens instantly without property sale delays'
+        },
+        {
+          icon: BarChart3,
+          title: 'Value Appreciation',
+          description: 'Benefit from property market growth'
+        }
+      ],
       features: [
         {
           icon: Building2,
@@ -51,6 +70,25 @@ export const TradingSection: React.FC<TradingSectionProps> = ({ language = 'en' 
       ]
     },
     de: {
+      performanceTitle: 'Immobilienmarkt-Performance',
+      benefitsTitle: 'Marktvorteile',
+      benefits: [
+        {
+          icon: Users,
+          title: 'Erhöhte Zugänglichkeit',
+          description: 'Beginnen Sie mit nur 1 € zu investieren'
+        },
+        {
+          icon: ArrowRightLeft,
+          title: 'Verbesserte Liquidität',
+          description: 'Handeln Sie Token sofort ohne Verzögerungen beim Immobilienverkauf'
+        },
+        {
+          icon: BarChart3,
+          title: 'Wertsteigerung',
+          description: 'Profitieren Sie vom Wachstum des Immobilienmarktes'
+        }
+      ],
       features: [
         {
           icon: Building2,
@@ -115,7 +153,7 @@ export const TradingSection: React.FC<TradingSectionProps> = ({ language = 'en' 
         <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
           <div>
             <h3 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-6">
-              Property Market Performance
+              {content[language].performanceTitle}
             </h3>
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 h-[300px]">
               <Plot
@@ -168,30 +206,18 @@ export const TradingSection: React.FC<TradingSectionProps> = ({ language = 'en' 
 
           <div className="space-y-6">
             <h3 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-6">
-              Market Benefits
+              {content[language].benefitsTitle}
             </h3>
             <div className="space-y-4">
-              <div className="flex items-center space-x-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
-                <Users className="w-6 h-6 text-black dark:text-white" />
-                <div>
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-gray-100">Increased Accessibility</h4>
-                  <p className="text-gray-600 dark:text-gray-400">Start investing with as little as €1</p>
+              {content[language].benefits.map((benefit, index) => (
+                <div key={index} className="flex items-center space-x-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                  <benefit.icon className="w-6 h-6 text-black dark:text-white" />
+                  <div>
+                    <h4 className="text-lg font-medium text-gray-900 dark:text-gray-100">{benefit.title}</h4>
+                    <p className="text-gray-600 dark:text-gray-400">{benefit.description}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center space-x-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
-                <ArrowRightLeft className="w-6 h-6 text-black dark:text-white" />
-                <div>
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-gray-100">Enhanced Liquidity</h4>
-                  <p className="text-gray-600 dark:text-gray-400">Trade tokens instantly without property sale delays</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
-                <BarChart3 className="w-6 h-6 text-black dark:text-white" />
-                <div>
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-gray-100">Value Appreciation</h4>
-                  <p className="text-gray-600 dark:text-gray-400">Benefit from property market growth</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

@@ -12,54 +12,110 @@ export const HolisticApproachSection: React.FC<HolisticApproachSectionProps> = (
     setExpandedCard(expandedCard === index ? null : index);
   };
 
-  const steps = [
-    {
-      icon: Search,
-      title: 'Property Identification',
-      summary: 'Selecting high-yield properties through thorough due diligence',
-      description: 'Before the start of the tokenization, TokeItReal ',
-      boldText: 'selects high-yield properties',
-      descriptionEnd: ' (e.g., residential or commercial properties). The selection is based on a thorough due diligence with defined criteria such as location, rental yield (e.g., 4–6% p.a.), and potential for value appreciation, determined through analyses by a dedicated team led by the board, possibly with input from external experts.'
+  const content = {
+    en: {
+      steps: [
+        {
+          icon: Search,
+          title: 'Property Identification',
+          summary: 'Selecting high-yield properties through thorough due diligence',
+          description: 'Before the start of the tokenization, TokeItReal ',
+          boldText: 'selects high-yield properties',
+          descriptionEnd: ' (e.g., residential or commercial properties). The selection is based on a thorough due diligence with defined criteria such as location, rental yield (e.g., 4–6% p.a.), and potential for value appreciation, determined through analyses by a dedicated team led by the board, possibly with input from external experts.'
+        },
+        {
+          icon: BarChart3,
+          title: 'Platform Listing',
+          summary: 'Presenting properties on our digital platform with minimum €1 investment',
+          descriptionStart: 'The selected property is presented on the ',
+          boldText1: 'digital platform',
+          descriptionMiddle: ', including detailed information (e.g., location, rental income, photos, appraisals). Investors can participate with a ',
+          boldText2: 'minimum investment of 1 €',
+          descriptionEnd: ' per token, with each profit participation certificate.'
+        },
+        {
+          icon: Wallet,
+          title: 'Capital Raising',
+          summary: 'Secure escrow collection of investor funds for property purchase',
+          description: 'The capital is deposited into an escrow account (e.g., managed by a notary or bank), to which TokeItReal has access solely for the ',
+          boldText: 'property purchase',
+          descriptionEnd: '. The funds are collected within a set timeframe, and the target volume of the series must be reached to complete the purchase; otherwise, the capital is refunded.'
+        },
+        {
+          icon: Building2,
+          title: 'Purchase and Management',
+          summary: 'Acquiring properties and providing full management services',
+          descriptionStart: 'Upon successful capital raising, TokeItReal ',
+          boldText1: 'acquires the property and takes over its management ',
+          descriptionMiddle: '(e.g. maintenance, tenant relations). Investors in the respective series ',
+          boldText2: 'receive 100% of the net rental income ',
+          descriptionEnd: ', after deducting costs related to the operation and maintenance of the property (e.g., non-allocable operating costs, necessary renovations), as well as 100% of the proceeds from a potential future sale of the property, proportional to their tokens.'
+        },
+        {
+          icon: ArrowRightLeft,
+          title: 'Trading and Representation',
+          summary: 'Enabling token trading on regulated secondary markets',
+          descriptionStart: 'After the purchase, TokeItReal ensures the property is represented on the sales platform to enable trading of the tokenized assets on a regulated secondary market. TokeItReal markets the property, regularly documents its condition (e.g., through reports on rental income and value development), and provides this information to investors ',
+          boldText1: 'to ensure transparency ',
+          descriptionMiddle: 'and an informed trading basis. The price of the tokenized profit participation certificates can fluctuate based on supply and demand, as in ',
+          boldText2: 'a free market',
+          descriptionEnd: ', allowing investors to directly benefit from the property\'s value appreciation. The tokens of the profit participation certificates are tradable at any time, with liquidity depending on market demand, offering investors flexibility to sell or hold them.'
+        }
+      ]
     },
-    {
-      icon: BarChart3,
-      title: 'Platform Listing',
-      summary: 'Presenting properties on our digital platform with minimum €1 investment',
-      descriptionStart: 'The selected property is presented on the ',
-      boldText1: 'digital platform',
-      descriptionMiddle: ', including detailed information (e.g., location, rental income, photos, appraisals). Investors can participate with a ',
-      boldText2: 'minimum investment of 1 €',
-      descriptionEnd: ' per token, with each profit participation certificate.'
-    },
-    {
-      icon: Wallet,
-      title: 'Capital Raising',
-      summary: 'Secure escrow collection of investor funds for property purchase',
-      description: 'The capital is deposited into an escrow account (e.g., managed by a notary or bank), to which TokeItReal has access solely for the ',
-      boldText: 'property purchase',
-      descriptionEnd: '. The funds are collected within a set timeframe, and the target volume of the series must be reached to complete the purchase; otherwise, the capital is refunded.'
-    },
-    {
-      icon: Building2,
-      title: 'Purchase and Management',
-      summary: 'Acquiring properties and providing full management services',
-      descriptionStart: 'Upon successful capital raising, TokeItReal ',
-      boldText1: 'acquires the property and takes over its management ',
-      descriptionMiddle: '(e.g. maintenance, tenant relations). Investors in the respective series ',
-      boldText2: 'receive 100% of the net rental income ',
-      descriptionEnd: ', after deducting costs related to the operation and maintenance of the property (e.g., non-allocable operating costs, necessary renovations), as well as 100% of the proceeds from a potential future sale of the property, proportional to their tokens.'
-    },
-    {
-      icon: ArrowRightLeft,
-      title: 'Trading and Representation',
-      summary: 'Enabling token trading on regulated secondary markets',
-      descriptionStart: 'After the purchase, TokeItReal ensures the property is represented on the sales platform to enable trading of the tokenized assets on a regulated secondary market. TokeItReal markets the property, regularly documents its condition (e.g., through reports on rental income and value development), and provides this information to investors ',
-      boldText1: 'to ensure transparency ',
-      descriptionMiddle: 'and an informed trading basis. The price of the tokenized profit participation certificates can fluctuate based on supply and demand, as in ',
-      boldText2: 'a free market',
-      descriptionEnd: ', allowing investors to directly benefit from the property\'s value appreciation. The tokens of the profit participation certificates are tradable at any time, with liquidity depending on market demand, offering investors flexibility to sell or hold them.'
+    de: {
+      steps: [
+        {
+          icon: Search,
+          title: 'Immobilienidentifizierung',
+          summary: 'Auswahl ertragsstarker Immobilien durch gründliche Due Diligence',
+          description: 'Vor Beginn der Tokenisierung ',
+          boldText: 'wählt TokeItReal ertragsstarke Immobilien aus',
+          descriptionEnd: ' (z.B. Wohn- oder Gewerbeimmobilien). Die Auswahl basiert auf einer gründlichen Due Diligence mit definierten Kriterien wie Lage, Mietrendite (z.B. 4–6% p.a.) und Wertsteigerungspotenzial, ermittelt durch Analysen eines dedizierten Teams unter Leitung des Vorstands, ggf. unter Einbeziehung externer Experten.'
+        },
+        {
+          icon: BarChart3,
+          title: 'Plattform-Listung',
+          summary: 'Präsentation von Immobilien auf unserer digitalen Plattform mit Mindestinvestition von 1 €',
+          descriptionStart: 'Die ausgewählte Immobilie wird auf der ',
+          boldText1: 'digitalen Plattform',
+          descriptionMiddle: ' präsentiert, einschließlich detaillierter Informationen (z.B. Lage, Mieteinnahmen, Fotos, Gutachten). Investoren können mit einer ',
+          boldText2: 'Mindestinvestition von 1 €',
+          descriptionEnd: ' pro Token teilnehmen, mit jedem Gewinnbeteiligungszertifikat.'
+        },
+        {
+          icon: Wallet,
+          title: 'Kapitalbeschaffung',
+          summary: 'Sichere Treuhand-Sammlung von Investorengeldern für den Immobilienkauf',
+          description: 'Das Kapital wird auf ein Treuhandkonto (z.B. verwaltet von einem Notar oder einer Bank) eingezahlt, auf das TokeItReal ausschließlich für den ',
+          boldText: 'Immobilienkauf',
+          descriptionEnd: ' Zugriff hat. Die Mittel werden innerhalb eines festgelegten Zeitrahmens gesammelt, und das Zielvolumen der Serie muss erreicht werden, um den Kauf abzuschließen; andernfalls wird das Kapital zurückerstattet.'
+        },
+        {
+          icon: Building2,
+          title: 'Kauf und Verwaltung',
+          summary: 'Immobilienerwerb und Bereitstellung vollständiger Verwaltungsdienstleistungen',
+          descriptionStart: 'Nach erfolgreicher Kapitalbeschaffung ',
+          boldText1: 'erwirbt TokeItReal die Immobilie und übernimmt deren Verwaltung ',
+          descriptionMiddle: '(z.B. Instandhaltung, Mieterbeziehungen). Investoren der jeweiligen Serie ',
+          boldText2: 'erhalten 100% der Nettomieteinnahmen ',
+          descriptionEnd: ', nach Abzug der Kosten für Betrieb und Instandhaltung der Immobilie (z.B. nicht umlagefähige Betriebskosten, notwendige Renovierungen), sowie 100% der Erlöse aus einem möglichen zukünftigen Verkauf der Immobilie, proportional zu ihren Token.'
+        },
+        {
+          icon: ArrowRightLeft,
+          title: 'Handel und Repräsentation',
+          summary: 'Ermöglichung des Token-Handels auf regulierten Sekundärmärkten',
+          descriptionStart: 'Nach dem Kauf stellt TokeItReal sicher, dass die Immobilie auf der Verkaufsplattform repräsentiert ist, um den Handel der tokenisierten Vermögenswerte auf einem regulierten Sekundärmarkt zu ermöglichen. TokeItReal vermarktet die Immobilie, dokumentiert regelmäßig ihren Zustand (z.B. durch Berichte über Mieteinnahmen und Wertentwicklung) und stellt diese Informationen den Investoren zur Verfügung, ',
+          boldText1: 'um Transparenz zu gewährleisten ',
+          descriptionMiddle: 'und eine informierte Handelsbasis zu schaffen. Der Preis der tokenisierten Gewinnbeteiligungszertifikate kann aufgrund von Angebot und Nachfrage schwanken, wie in ',
+          boldText2: 'einem freien Markt',
+          descriptionEnd: ', sodass Investoren direkt von der Wertsteigerung der Immobilie profitieren können. Die Token der Gewinnbeteiligungszertifikate sind jederzeit handelbar, wobei die Liquidität von der Marktnachfrage abhängt und den Investoren Flexibilität beim Verkauf oder Halten bietet.'
+        }
+      ]
     }
-  ];
+  };
+
+  const steps = content[language].steps;
 
   return (
     <div className="bg-white dark:bg-gray-900 py-24">
