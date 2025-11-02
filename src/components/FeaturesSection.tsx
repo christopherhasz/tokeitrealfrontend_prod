@@ -3,9 +3,10 @@ import { Check } from 'lucide-react';
 
 interface FeaturesSectionProps {
   showContact?: boolean;
+  language?: 'de' | 'en';
 }
 
-export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ showContact = false }) => {
+export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ showContact = false, language = 'en' }) => {
   const featuresRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

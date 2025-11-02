@@ -2,7 +2,11 @@ import React from 'react';
 import { TrendingUp } from 'lucide-react';
 import { VerticalBarChart } from './VerticalBarChart';
 
-export const StatisticsSection: React.FC = () => {
+interface StatisticsSectionProps {
+  language?: 'de' | 'en';
+}
+
+export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ language = 'en' }) => {
   // Real Estate Market data (in trillions)
   const realEstateMarketSize = 164.84; // €164.84T
   const realEstateTransactionVolume = 0.219; // €219B = €0.219T
@@ -20,10 +24,12 @@ export const StatisticsSection: React.FC = () => {
         <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-6 md:p-16">
           <div className="text-center mb-8 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-light text-gray-900 dark:text-gray-100 mb-4 md:mb-6">
-              Market Potential
+              {language === 'de' ? 'Marktpotenzial' : 'Market Potential'}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              The traditional real estate market shows significant potential for digitalization
+              {language === 'de'
+                ? 'Der traditionelle Immobilienmarkt zeigt erhebliches Potenzial für die Digitalisierung'
+                : 'The traditional real estate market shows significant potential for digitalization'}
             </p>
           </div>
 

@@ -4,7 +4,11 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import { Building2, BarChart3, ArrowRightLeft, FileText, Users } from 'lucide-react';
 
-export const TradingSection: React.FC = () => {
+interface TradingSectionProps {
+  language?: 'de' | 'en';
+}
+
+export const TradingSection: React.FC<TradingSectionProps> = ({ language = 'en' }) => {
   // Sample data for the price chart
   const priceData = [
     { month: 'Jan', price: 100 },
@@ -69,10 +73,12 @@ export const TradingSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-light text-gray-900 dark:text-gray-100 mb-6">
-            Trading & Market Dynamics
+            {language === 'de' ? 'Handel & Marktdynamik' : 'Trading & Market Dynamics'}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            Experience a new era of real estate investment with our transparent and liquid marketplace
+            {language === 'de'
+              ? 'Erleben Sie eine neue Ära der Immobilieninvestition mit unserem transparenten und liquiden Marktplatz'
+              : 'Experience a new era of real estate investment with our transparent and liquid marketplace'}
           </p>
         </div>
 

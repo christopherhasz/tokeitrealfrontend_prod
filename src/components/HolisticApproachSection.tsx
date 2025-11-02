@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Building2, Wallet, BarChart3, ArrowRightLeft, ChevronDown, Search } from 'lucide-react';
 
-export const HolisticApproachSection: React.FC = () => {
+interface HolisticApproachSectionProps {
+  language?: 'de' | 'en';
+}
+
+export const HolisticApproachSection: React.FC<HolisticApproachSectionProps> = ({ language = 'en' }) => {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
 
   const toggleCard = (index: number) => {
@@ -62,10 +66,12 @@ export const HolisticApproachSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-light text-gray-900 dark:text-gray-100 mb-6">
-            Our Holistic Approach
+            {language === 'de' ? 'Unser ganzheitlicher Ansatz' : 'Our Holistic Approach'}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            From property identification to active management, we handle every aspect of real estate tokenization
+            {language === 'de'
+              ? 'Von der Immobilienidentifizierung bis zur aktiven Verwaltung k\u00fcmmern wir uns um jeden Aspekt der Immobilientokenisierung'
+              : 'From property identification to active management, we handle every aspect of real estate tokenization'}
           </p>
         </div>
 

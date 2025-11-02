@@ -115,12 +115,12 @@ export const HomePage: React.FC = () => {
 
         <section id="home">
           <Hero language={language} content={currentContent} />
-          <HolisticApproachSection />
-          <TradingSection />
-          <ManagementSection />
-          <ProblemSolutionSection />
-          <StatisticsSection />
-          <FeaturesSection showContact={SHOW_CONTACT} />
+          <HolisticApproachSection language={language} />
+          <TradingSection language={language} />
+          <ManagementSection language={language} />
+          <ProblemSolutionSection language={language} />
+          <StatisticsSection language={language} />
+          <FeaturesSection showContact={SHOW_CONTACT} language={language} />
         </section>
         {SHOW_CONTACT && (
           <>

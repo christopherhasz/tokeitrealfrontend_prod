@@ -1,7 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Lock, Coins, Building, TrendingUp } from 'lucide-react';
 
-export const ProblemSolutionSection: React.FC = () => {
+interface ProblemSolutionSectionProps {
+  language?: 'de' | 'en';
+}
+
+export const ProblemSolutionSection: React.FC<ProblemSolutionSectionProps> = ({ language = 'en' }) => {
   const problemsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,8 +42,8 @@ export const ProblemSolutionSection: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center mb-8 md:mb-12">
           <div className="space-y-8" ref={problemsRef}>
             <h2 className="text-3xl md:text-4xl font-light text-gray-900 dark:text-gray-100 leading-tight">
-              Traditional Real Estate Market
-              <span className="block text-red-600 dark:text-red-500 mt-2">is outdated</span>
+              {language === 'de' ? 'Traditioneller Immobilienmarkt' : 'Traditional Real Estate Market'}
+              <span className="block text-red-600 dark:text-red-500 mt-2">{language === 'de' ? 'ist veraltet' : 'is outdated'}</span>
             </h2>
             <div className="space-y-6">
               <div className="problem-item transform transition-all duration-700 ease-out translate-y-20 opacity-0 flex items-start space-x-4">

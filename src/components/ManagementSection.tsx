@@ -1,7 +1,11 @@
 import React from 'react';
 import { Building2, Wrench, Users, Receipt, BarChart3, Shield } from 'lucide-react';
 
-export const ManagementSection: React.FC = () => {
+interface ManagementSectionProps {
+  language?: 'de' | 'en';
+}
+
+export const ManagementSection: React.FC<ManagementSectionProps> = ({ language = 'en' }) => {
   const managementAspects = [
     {
       icon: Building2,
@@ -46,10 +50,12 @@ export const ManagementSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-light text-gray-900 dark:text-gray-100 mb-6">
-            Professional Property Management
+            {language === 'de' ? 'Professionelle Immobilienverwaltung' : 'Professional Property Management'}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            Focus on your investment while our expert team handles all aspects of property management
+            {language === 'de'
+              ? 'Konzentrieren Sie sich auf Ihre Investition, während unser Expertenteam alle Aspekte der Immobilienverwaltung übernimmt'
+              : 'Focus on your investment while our expert team handles all aspects of property management'}
           </p>
         </div>
 
