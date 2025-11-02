@@ -18,6 +18,16 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
   const [showConsentDialog, setShowConsentDialog] = useState(false);
   const STORAGE_KEY = 'tokeitreal_youtube_consent';
 
+  const handleReset = useCallback(() => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      setHasConsent(null);
+      setShowConsentDialog(true);
+    } catch (error) {
+      console.error('Error resetting consent:', error);
+    }
+  }, [STORAGE_KEY]);
+
   useEffect(() => {
     const checkConsent = () => {
       try {
@@ -78,16 +88,6 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
   const handleLoadVideo = () => {
     setShowConsentDialog(true);
   };
-
-  const handleReset = useCallback(() => {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-      setHasConsent(null);
-      setShowConsentDialog(true);
-    } catch (error) {
-      console.error('Error resetting consent:', error);
-    }
-  }, [STORAGE_KEY]);
 
   if (hasConsent === true) {
     return (
