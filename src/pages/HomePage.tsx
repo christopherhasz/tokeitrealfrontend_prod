@@ -30,13 +30,14 @@ export const HomePage: React.FC = () => {
     en: {
       legalTitle: 'Legal Notice (Disclaimer)',
       legalText: [
-        'The content of this website serves exclusively for general information and presentation of the "TokeItReal" project.',
-        'Currently, no financial services, investment advice, asset management or brokerage of financial instruments within the meaning of the Banking Act (KWG), Securities Institute Act (WpIG) or Securities Prospectus Act (WpPG) are offered.',
-        'In particular, this website does not constitute an offer to acquire or dispose of securities, tokens, participations or other assets.',
-        'All information regarding possible business models, structures or projects is non-binding, not a public offer and serves exclusively for conceptual presentation.',
-        'TokeItReal is currently in the development and concept phase.',
-        'Legally binding activity will only take place after the establishment of a corresponding company and compliance with all legal licensing and information obligations.',
-        'Despite careful content control, we assume no liability for the accuracy, completeness and timeliness of the information presented. Any liability for damages arising directly or indirectly from the use of this website is excluded, unless based on intent or gross negligence.'
+        'The website tokeitreal.com is operated by TokeItReal GbR, represented by the partners Christopher Haß and Felix Behnke.',
+        'The company is currently in the development and concept phase.',
+        'The information provided on this website serves exclusively for the general presentation of the "TokeItReal" project and the introduction of the underlying concept for digitization and tokenization of real estate values.',
+        'Currently, no financial services, investment advice, brokerage of financial instruments, asset management, or offers for the acquisition or disposal of securities, tokens, or other assets within the meaning of the Banking Act (KWG), Securities Institute Act (WpIG), Electronic Securities Act (eWpG), or Securities Prospectus Act (WpPG) are provided.',
+        'All descriptions, representations, and illustrations contained on this website are non-binding and do not constitute legal or financial recommendations or calls to action.',
+        'They serve exclusively for informational purposes about the planned business development of TokeItReal GbR.',
+        'TokeItReal GbR assumes no responsibility for the accuracy, completeness, or timeliness of the information provided. Any liability for material or immaterial damages arising from the use or non-use of the information offered is excluded, unless there is proven intentional or grossly negligent fault.',
+        'The company expressly reserves the right to change, supplement, delete parts of the pages or the entire offering without separate notice, or to discontinue publication temporarily or permanently.'
       ],
       // Hero Section
       heroTitle1: 'Tokenized',
@@ -54,13 +55,14 @@ export const HomePage: React.FC = () => {
     de: {
       legalTitle: 'Rechtlicher Hinweis (Disclaimer)',
       legalText: [
-        'Die Inhalte dieser Website dienen ausschließlich der allgemeinen Information und Präsentation des Projekts „TokeItReal".',
-        'Es werden derzeit keine Finanzdienstleistungen, Anlageberatung, Vermögensverwaltung oder Vermittlung von Finanzinstrumenten im Sinne des Kreditwesengesetzes (KWG), Wertpapierinstitutsgesetzes (WpIG) oder Wertpapierprospektgesetzes (WpPG) angeboten.',
-        'Insbesondere stellt diese Website kein Angebot zum Erwerb oder zur Veräußerung von Wertpapieren, Token, Beteiligungen oder sonstigen Vermögenswerten dar.',
-        'Alle Angaben zu möglichen Geschäftsmodellen, Strukturen oder Projekten sind unverbindlich, nicht öffentliches Angebot und dienen ausschließlich der konzeptionellen Darstellung.',
-        'TokeItReal befindet sich derzeit in der Entwicklungs- und Konzeptphase.',
-        'Eine rechtlich verbindliche Tätigkeit erfolgt erst nach Gründung einer entsprechenden Gesellschaft und Einhaltung sämtlicher gesetzlicher Zulassungs- und Informationspflichten.',
-        'Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Gewähr für Richtigkeit, Vollständigkeit und Aktualität der dargestellten Informationen. Jegliche Haftung für Schäden, die direkt oder indirekt aus der Nutzung dieser Website entstehen, ist ausgeschlossen, soweit sie nicht auf Vorsatz oder grober Fahrlässigkeit beruhen.'
+        'Die Website tokeitreal.com wird von der TokeItReal GbR, vertreten durch die Gesellschafter Christopher Haß und Felix Behnke, betrieben.',
+        'Die Gesellschaft befindet sich derzeit in der Entwicklungs- und Konzeptphase.',
+        'Die auf dieser Website bereitgestellten Informationen dienen ausschließlich der allgemeinen Darstellung des Projekts „TokeItReal" sowie der Vorstellung des zugrunde liegenden Konzepts zur Digitalisierung und Tokenisierung von Immobilienwerten.',
+        'Es werden derzeit keine Finanzdienstleistungen, keine Anlageberatung, keine Vermittlung von Finanzinstrumenten, keine Verwaltung von Vermögenswerten und keine Angebote zum Erwerb oder zur Veräußerung von Wertpapieren, Token oder sonstigen Vermögenswerten im Sinne des Kreditwesengesetzes (KWG), Wertpapierinstitutsgesetzes (WpIG), elektronischen Wertpapiergesetzes (eWpG) oder Wertpapierprospektgesetzes (WpPG) erbracht.',
+        'Alle auf dieser Website enthaltenen Beschreibungen, Darstellungen und Abbildungen sind unverbindlich und stellen weder eine rechtliche noch eine finanzielle Empfehlung oder Aufforderung zum Tätigwerden dar.',
+        'Sie dienen ausschließlich dem Informationszweck über die geplante Unternehmensentwicklung der TokeItReal GbR.',
+        'Die TokeItReal GbR übernimmt keine Gewähr für die Richtigkeit, Vollständigkeit oder Aktualität der bereitgestellten Informationen. Jegliche Haftung für Schäden materieller oder immaterieller Art, die durch die Nutzung oder Nichtnutzung der angebotenen Informationen entstehen, ist ausgeschlossen, soweit kein nachweislich vorsätzliches oder grob fahrlässiges Verschulden vorliegt.',
+        'Die Gesellschaft behält sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.'
       ],
       // Hero Section
       heroTitle1: 'Tokenisierte',
