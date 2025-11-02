@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Cookie, Play, Shield, RotateCcw } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { ConsentData } from '../types';
 
 interface YouTubeVideoConsentProps {
@@ -161,10 +162,16 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
                 </button>
               </div>
 
-              <div className="mt-2 md:mt-3 pt-2 md:pt-3 border-t border-gray-200 dark:border-gray-700 text-center">
+              <div className="mt-2 md:mt-3 pt-2 md:pt-3 border-t border-gray-200 dark:border-gray-700 text-center space-y-1">
                 <p className="text-xs text-gray-500 dark:text-gray-500">
                   Cookie Policy Version {CONSENT_POLICY_VERSION}
                 </p>
+                <Link
+                  to="/datenschutz"
+                  className="text-xs text-blue-600 dark:text-blue-400 hover:underline inline-block"
+                >
+                  View Privacy Policy / Datenschutzerklärung
+                </Link>
               </div>
             </div>
           </div>
