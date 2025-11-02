@@ -210,7 +210,7 @@ export const HolisticApproachSection: React.FC<HolisticApproachSectionProps> = (
                   </div>
 
                   <div className="text-center mb-2 lg:mb-4">
-                    <h3 className="text-sm sm:text-lg lg:text-2xl font-light text-gray-900 dark:text-gray-100 leading-tight mb-1 sm:mb-2">
+                    <h3 className="text-sm sm:text-lg lg:text-2xl font-light text-gray-900 dark:text-gray-100 leading-tight mb-1 sm:mb-2 break-words hyphens-auto" lang={language}>
                       {step.title}
                     </h3>
                     <p className="text-xs sm:text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-tight px-1">
