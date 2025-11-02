@@ -15,12 +15,12 @@ export const ImpressumPage: React.FC = () => {
       legalInfo: 'Angaben gemäß § 5 TMG',
       companyInfo: {
         name: 'TokeItReal GbR',
-        representatives: 'vertreten durch die Gesellschafter',
-        founders: 'Christopher Haß & Felix Behnke',
-        address: '[Straße, Hausnummer]',
-        city: '[PLZ, Ort – voraussichtlich Berlin]',
+        representatives: 'vertreten durch den Gesellschafter',
+        founders: 'Christopher Haß',
+        address: 'Waldstraße 21',
+        city: '15345 Altlandsberg',
         country: 'Deutschland',
-        email: 'kontakt@tokeitreal.com',
+        email: 'info@tokeitreal.com',
         web: 'tokeitreal.com'
       },
       representationTitle: 'Vertretung',
