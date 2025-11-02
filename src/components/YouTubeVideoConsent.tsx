@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Cookie, Play, Shield, RotateCcw } from 'lucide-react';
 
 interface YouTubeVideoConsentProps {
@@ -41,7 +41,7 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
     if (onResetAvailable) {
       onResetAvailable(handleReset);
     }
-  }, [onResetAvailable]);
+  }, [onResetAvailable, handleReset]);
 
   const handleAccept = () => {
     try {
@@ -79,7 +79,7 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
     setShowConsentDialog(true);
   };
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     try {
       localStorage.removeItem(STORAGE_KEY);
       setHasConsent(null);
@@ -87,7 +87,7 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
     } catch (error) {
       console.error('Error resetting consent:', error);
     }
-  };
+  }, [STORAGE_KEY]);
 
   if (hasConsent === true) {
     return (
