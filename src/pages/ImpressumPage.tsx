@@ -60,12 +60,12 @@ export const ImpressumPage: React.FC = () => {
       legalInfo: 'Information according to § 5 TMG',
       companyInfo: {
         name: 'TokeItReal GbR',
-        representatives: 'represented by the partners',
-        founders: 'Christopher Haß & Felix Behnke',
-        address: '[Street, House Number]',
-        city: '[Postal Code, City – expected Berlin]',
+        representatives: 'represented by the partner',
+        founders: 'Christopher Haß',
+        address: 'Waldstraße 21',
+        city: '15345 Altlandsberg',
         country: 'Germany',
-        email: 'kontakt@tokeitreal.com',
+        email: 'info@tokeitreal.com',
         web: 'tokeitreal.com'
       },
       representationTitle: 'Representation',
@@ -98,7 +98,7 @@ export const ImpressumPage: React.FC = () => {
         'Further information can be found in our privacy policy.'
       ],
       responsibilityTitle: 'Responsible for Content (§ 55 Abs. 2 RStV)',
-      responsibilityText: 'Christopher Haß and Felix Behnke at the address given above'
+      responsibilityText: 'Christopher Haß at the address given above'
     }
   };
 
