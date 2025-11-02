@@ -190,7 +190,6 @@ export const ImpressumPage: React.FC = () => {
               {currentContent.representationText}
             </p>
           </section>
-          </section>
 
           {/* Company Form */}
           <section className="mb-12">
