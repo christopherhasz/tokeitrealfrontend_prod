@@ -13,62 +13,92 @@ export const ImpressumPage: React.FC = () => {
     de: {
       title: 'Impressum',
       legalInfo: 'Angaben gemäß § 5 TMG',
-      name: 'Christopher Haß',
-      activity: 'Projektinhaber TokeItReal',
-      address: 'Waldstraße 21, 15345 Altlandsberg',
-      email: 'info@tokeitreal.com',
-      legalStatusTitle: 'Hinweis zum rechtlichen Status',
-      legalStatusText: [
-        'Bei TokeItReal handelt es sich derzeit nicht um ein Unternehmen im Sinne des Handelsrechts.',
-        'Die Website dient ausschließlich der Präsentation und Information über ein in Entwicklung befindliches Konzept.',
-        'Es werden keine Finanzdienstleistungen, keine Anlageberatung, kein Verkauf von Finanzinstrumenten und kein öffentliches Angebot von Wertpapieren oder Token im Sinne des Wertpapierprospektgesetzes (WpPG) oder des eWpG vorgenommen.',
-        'Alle Inhalte dienen ausschließlich der allgemeinen Information und stellen kein Angebot oder eine Aufforderung zum Erwerb oder zur Veräußerung von Vermögenswerten dar.'
+      companyInfo: {
+        name: 'TokeItReal GbR',
+        representatives: 'vertreten durch die Gesellschafter',
+        founders: 'Christopher Haß & Felix Behnke',
+        address: '[Straße, Hausnummer]',
+        city: '[PLZ, Ort – voraussichtlich Berlin]',
+        country: 'Deutschland',
+        email: 'kontakt@tokeitreal.com',
+        web: 'tokeitreal.com'
+      },
+      representationTitle: 'Vertretung',
+      representationText: 'Jeder Gesellschafter ist einzeln vertretungsberechtigt (§ 714 BGB).',
+      companyFormTitle: 'Gesellschaftsform',
+      companyFormText: [
+        'Die TokeItReal GbR ist eine Gesellschaft bürgerlichen Rechts nach §§ 705 ff. BGB.',
+        'Sitz der Gesellschaft ist Berlin.'
+      ],
+      activityStatusTitle: 'Hinweis zum Tätigkeitsstatus',
+      activityStatusText: [
+        'Die TokeItReal GbR befindet sich derzeit in der konzeptionellen Entwicklungsphase.',
+        'Über diese Website werden keine Finanzdienstleistungen, keine Anlageberatung und keine Angebote zum Erwerb von Finanzinstrumenten oder Token im Sinne des Kreditwesengesetzes (KWG), Wertpapierinstitutsgesetzes (WpIG), Wertpapierprospektgesetzes (WpPG) oder elektronischen Wertpapiergesetzes (eWpG) erbracht.',
+        'Alle dargestellten Inhalte dienen ausschließlich der Präsentation des Projekts und stellen kein Angebot im rechtlichen Sinne dar.'
       ],
       disclaimerTitle: 'Haftungsausschluss',
       disclaimerText: [
-        'Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte wird jedoch keine Gewähr übernommen.',
-        'Verbindliche rechtliche, steuerliche oder finanzielle Beratung findet nicht statt.'
+        'Die Inhalte dieser Website werden mit größter Sorgfalt erstellt. Eine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte wird jedoch nicht übernommen.',
+        'Die TokeItReal GbR haftet nicht für Schäden, die direkt oder indirekt aus der Nutzung der Website entstehen, es sei denn, diese beruhen auf Vorsatz oder grober Fahrlässigkeit.'
       ],
       copyrightTitle: 'Urheberrecht',
       copyrightText: [
-        'Die auf dieser Website veröffentlichten Inhalte, Grafiken und Designs unterliegen dem deutschen Urheberrecht.',
-        'Vervielfältigung, Bearbeitung oder Verbreitung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des Erstellers.'
+        'Alle auf dieser Website veröffentlichten Inhalte, Designs, Logos und Konzepte sind urheberrechtlich geschützt.',
+        'Jede Verwertung außerhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung der TokeItReal GbR.'
       ],
       privacyTitle: 'Datenschutz',
       privacyText: [
         'Diese Website erhebt und verarbeitet keine personenbezogenen Daten, soweit dies nicht zur technischen Bereitstellung der Seite erforderlich ist.',
-        'Es findet keine Analyse, kein Tracking und keine Weitergabe von Daten an Dritte statt.'
-      ]
+        'Es findet keine Analyse, kein Tracking und keine Weitergabe von Daten an Dritte statt.',
+        'Weitere Informationen findest du in unserer Datenschutzerklärung.'
+      ],
+      responsibilityTitle: 'Verantwortlich für den Inhalt (§ 55 Abs. 2 RStV)',
+      responsibilityText: 'Christopher Haß und Felix Behnke unter der oben angegebenen Anschrift'
     },
     en: {
       title: 'Legal Notice',
       legalInfo: 'Information according to § 5 TMG',
-      name: 'Christopher Haß',
-      activity: 'Project Owner TokeItReal',
-      address: 'Waldstraße 21, 15345 Altlandsberg',
-      email: 'info@tokeitreal.com',
-      legalStatusTitle: 'Note on Legal Status',
-      legalStatusText: [
-        'TokeItReal is currently not a company within the meaning of commercial law.',
-        'This website serves exclusively for the presentation and information about a concept under development.',
-        'No financial services, investment advice, sale of financial instruments, or public offering of securities or tokens within the meaning of the Securities Prospectus Act (WpPG) or eWpG are provided.',
-        'All content serves exclusively for general information and does not constitute an offer or invitation to acquire or dispose of assets.'
+      companyInfo: {
+        name: 'TokeItReal GbR',
+        representatives: 'represented by the partners',
+        founders: 'Christopher Haß & Felix Behnke',
+        address: '[Street, House Number]',
+        city: '[Postal Code, City – expected Berlin]',
+        country: 'Germany',
+        email: 'kontakt@tokeitreal.com',
+        web: 'tokeitreal.com'
+      },
+      representationTitle: 'Representation',
+      representationText: 'Each partner is individually authorized to represent (§ 714 BGB).',
+      companyFormTitle: 'Company Form',
+      companyFormText: [
+        'TokeItReal GbR is a civil law partnership according to §§ 705 ff. BGB.',
+        'The registered office of the company is Berlin.'
+      ],
+      activityStatusTitle: 'Note on Activity Status',
+      activityStatusText: [
+        'TokeItReal GbR is currently in the conceptual development phase.',
+        'No financial services, investment advice, or offers for the acquisition of financial instruments or tokens within the meaning of the Banking Act (KWG), Securities Institute Act (WpIG), Securities Prospectus Act (WpPG), or Electronic Securities Act (eWpG) are provided through this website.',
+        'All content presented serves exclusively for project presentation and does not constitute a legal offer.'
       ],
       disclaimerTitle: 'Disclaimer',
       disclaimerText: [
-        'The content of this website has been created with the greatest possible care. However, no guarantee is given for the accuracy, completeness and timeliness of the content.',
-        'No binding legal, tax or financial advice is provided.'
+        'The content of this website is created with the greatest care. However, no guarantee is given for the accuracy, completeness and timeliness of the content.',
+        'TokeItReal GbR is not liable for damages that arise directly or indirectly from the use of the website, unless they are based on intent or gross negligence.'
       ],
       copyrightTitle: 'Copyright',
       copyrightText: [
-        'The content, graphics and designs published on this website are subject to German copyright law.',
-        'Reproduction, editing or distribution outside the limits of copyright law requires the written consent of the creator.'
+        'All content, designs, logos and concepts published on this website are protected by copyright.',
+        'Any use outside the limits of copyright law requires the written consent of TokeItReal GbR.'
       ],
       privacyTitle: 'Data Protection',
       privacyText: [
         'This website does not collect or process personal data unless this is necessary for the technical provision of the site.',
-        'No analysis, tracking or sharing of data with third parties takes place.'
-      ]
+        'No analysis, tracking or sharing of data with third parties takes place.',
+        'Further information can be found in our privacy policy.'
+      ],
+      responsibilityTitle: 'Responsible for Content (§ 55 Abs. 2 RStV)',
+      responsibilityText: 'Christopher Haß and Felix Behnke at the address given above'
     }
   };
 
@@ -122,28 +152,67 @@ export const ImpressumPage: React.FC = () => {
               {currentContent.legalInfo}
             </h2>
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-              <p className="text-gray-900 dark:text-gray-100 mb-2">
-                <strong>{currentContent.name}</strong>
-              </p>
-              <p className="text-gray-600 dark:text-gray-400 mb-2">
-                {currentContent.activity}
-              </p>
-              <p className="text-gray-600 dark:text-gray-400 mb-2">
-                {currentContent.address}
-              </p>
-              <p className="text-gray-600 dark:text-gray-400">
-                E-Mail: {currentContent.email}
-              </p>
+              <div className="space-y-2">
+                <p className="text-gray-900 dark:text-gray-100">
+                  <strong>{currentContent.companyInfo.name}</strong>
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {currentContent.companyInfo.representatives}
+                </p>
+                <p className="text-gray-900 dark:text-gray-100">
+                  <strong>{currentContent.companyInfo.founders}</strong>
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {currentContent.companyInfo.address}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {currentContent.companyInfo.city}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {currentContent.companyInfo.country}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  E-Mail: {currentContent.companyInfo.email}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Web: {currentContent.companyInfo.web}
+                </p>
+              </div>
             </div>
           </section>
 
-          {/* Legal Status */}
+          {/* Representation */}
           <section className="mb-12">
             <h2 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-6">
-              {currentContent.legalStatusTitle}
+              {currentContent.representationTitle}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+              {currentContent.representationText}
+            </p>
+          </section>
+          </section>
+
+          {/* Company Form */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-6">
+              {currentContent.companyFormTitle}
             </h2>
             <div className="space-y-4">
-              {currentContent.legalStatusText.map((paragraph, index) => (
+              {currentContent.companyFormText.map((paragraph, index) => (
+                <p key={index} className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </section>
+
+          {/* Activity Status */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-6">
+              {currentContent.activityStatusTitle}
+            </h2>
+            <div className="space-y-4">
+              {currentContent.activityStatusText.map((paragraph, index) => (
                 <p key={index} className="text-gray-600 dark:text-gray-400 leading-relaxed">
                   {paragraph}
                 </p>
@@ -191,6 +260,16 @@ export const ImpressumPage: React.FC = () => {
                 </p>
               ))}
             </div>
+          </section>
+
+          {/* Responsibility */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-light text-gray-900 dark:text-gray-100 mb-6">
+              {currentContent.responsibilityTitle}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+              {currentContent.responsibilityText}
+            </p>
           </section>
         </div>
       </div>
