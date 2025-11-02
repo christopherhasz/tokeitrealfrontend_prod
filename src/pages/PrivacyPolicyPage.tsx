@@ -26,7 +26,7 @@ export const PrivacyPolicyPage: React.FC = () => {
               </h2>
               <div className="space-y-2">
                 <p className="font-medium">TokeItReal GbR</p>
-                <p>vertreten durch die Gesellschafter Christopher Haß & Felix Behnke</p>
+                <p>vertreten durch den Gesellschafter Christopher Haß</p>
                 <p>Waldstraße 21</p>
                 <p>15345 Altlandsberg</p>
                 <p>Deutschland</p>
