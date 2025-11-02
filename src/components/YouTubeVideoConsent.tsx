@@ -146,16 +146,16 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-1.5 md:gap-2">
+              <div className="flex flex-row gap-1.5 md:gap-2">
                 <button
                   onClick={handleDecline}
-                  className="flex-1 px-3 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-light text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  className="flex-1 px-2 md:px-3 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-light text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   Decline
                 </button>
                 <button
                   onClick={handleAccept}
-                  className="flex-1 px-3 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-light text-white dark:text-black bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  className="flex-1 px-2 md:px-3 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-light text-white dark:text-black bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   Accept & Load Video
                 </button>
