@@ -123,24 +123,24 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
     <div className={`relative w-full ${className}`} style={{ paddingBottom: '56.25%' }}>
       <div className="absolute top-0 left-0 w-full h-full rounded-xl shadow-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center overflow-hidden">
         {showConsentDialog ? (
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-10 animate-fade-in">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-lg w-full shadow-2xl transform transition-all duration-300 scale-100">
-              <div className="flex items-center justify-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                  <Cookie className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-3 md:p-4 z-10 animate-fade-in">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 md:p-5 max-w-md w-full shadow-2xl transform transition-all duration-300 scale-100 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-center mb-3">
+                <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                  <Cookie className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                 </div>
               </div>
 
-              <h3 className="text-xl font-light text-gray-900 dark:text-gray-100 mb-3 text-center">
+              <h3 className="text-lg md:text-xl font-light text-gray-900 dark:text-gray-100 mb-2 text-center">
                 Cookie Consent Required
               </h3>
 
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center leading-relaxed">
+              <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-3 text-center leading-relaxed">
                 To watch this video, we need to load content from YouTube, which may set cookies on your device.
               </p>
 
-              <div className="flex items-center gap-2 mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <Shield className="w-4 h-4 text-gray-600 dark:text-gray-400 flex-shrink-0" />
+              <div className="flex items-center gap-2 mb-3 p-2 md:p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <Shield className="w-3 h-3 md:w-4 md:h-4 text-gray-600 dark:text-gray-400 flex-shrink-0" />
                 <p className="text-xs text-gray-600 dark:text-gray-400">
                   We use youtube-nocookie.com for enhanced privacy
                 </p>
@@ -149,19 +149,19 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
               <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   onClick={handleDecline}
-                  className="flex-1 px-4 py-2 rounded-lg text-sm font-light text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  className="flex-1 px-3 py-2 rounded-lg text-xs md:text-sm font-light text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   Decline
                 </button>
                 <button
                   onClick={handleAccept}
-                  className="flex-1 px-4 py-2 rounded-lg text-sm font-light text-white dark:text-black bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  className="flex-1 px-3 py-2 rounded-lg text-xs md:text-sm font-light text-white dark:text-black bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   Accept & Load Video
                 </button>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
+              <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 text-center">
                 <p className="text-xs text-gray-500 dark:text-gray-500">
                   Cookie Policy Version {CONSENT_POLICY_VERSION}
                 </p>
