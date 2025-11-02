@@ -3,6 +3,7 @@ import { Download, FileText } from 'lucide-react';
 import { config, endpoints, logger } from '../config/environment';
 import { Nav } from '../components/Nav';
 import { LinkedInContact } from '../components/LinkedInContact';
+import { YouTubeVideoConsent } from '../components/YouTubeVideoConsent';
 
 export const ResourcesPage: React.FC = () => {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -81,19 +82,10 @@ export const ResourcesPage: React.FC = () => {
             <h2 className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100">
               Introduction Video
             </h2>
-            <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-              <iframe
-                className="absolute top-0 left-0 w-full h-full rounded-xl shadow-lg"
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/ohZQlC_6yrs?si=N4PVSScgSgYiLDLc"
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              ></iframe>
-            </div>
+            <YouTubeVideoConsent
+              videoId="ohZQlC_6yrs"
+              title="TokeItReal Introduction Video"
+            />
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               Watch our introduction video to understand how TokeItReal is revolutionizing real estate investment through tokenization.
             </p>
