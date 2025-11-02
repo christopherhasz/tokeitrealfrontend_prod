@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Download, FileText } from 'lucide-react';
+import { Download, FileText, RotateCcw } from 'lucide-react';
 import { config, endpoints, logger } from '../config/environment';
 import { Nav } from '../components/Nav';
 import { LinkedInContact } from '../components/LinkedInContact';
@@ -8,6 +8,7 @@ import { YouTubeVideoConsent } from '../components/YouTubeVideoConsent';
 export const ResourcesPage: React.FC = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [resetConsent, setResetConsent] = useState<(() => void) | null>(null);
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -85,6 +86,7 @@ export const ResourcesPage: React.FC = () => {
             <YouTubeVideoConsent
               videoId="ohZQlC_6yrs"
               title="TokeItReal Introduction Video"
+              onResetAvailable={setResetConsent}
             />
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               Watch our introduction video to understand how TokeItReal is revolutionizing real estate investment through tokenization.
@@ -160,8 +162,26 @@ export const ResourcesPage: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       <LinkedInContact />
+
+      {/* Cookie Reset Footer */}
+      <footer className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Need to change your cookie consent for YouTube videos?
+            </p>
+            <button
+              onClick={() => resetConsent?.()}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-light text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
+            >
+              <RotateCcw className="w-4 h-4" />
+              <span>Reset Cookie Consent</span>
+            </button>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

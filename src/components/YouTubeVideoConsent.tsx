@@ -5,12 +5,14 @@ interface YouTubeVideoConsentProps {
   videoId: string;
   title?: string;
   className?: string;
+  onResetAvailable?: (resetFn: () => void) => void;
 }
 
 export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
   videoId,
   title = 'YouTube video player',
-  className = ''
+  className = '',
+  onResetAvailable
 }) => {
   const [hasConsent, setHasConsent] = useState<boolean | null>(null);
   const [showConsentDialog, setShowConsentDialog] = useState(false);
@@ -34,6 +36,12 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
 
     checkConsent();
   }, []);
+
+  useEffect(() => {
+    if (onResetAvailable) {
+      onResetAvailable(handleReset);
+    }
+  }, [onResetAvailable]);
 
   const handleAccept = () => {
     try {
@@ -95,13 +103,6 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         />
-        <button
-          onClick={handleReset}
-          className="absolute top-4 right-4 p-2 rounded-lg bg-black/60 dark:bg-white/60 hover:bg-black/80 dark:hover:bg-white/80 transition-all duration-300 backdrop-blur-sm z-10"
-          title="Reset consent and reload dialog"
-        >
-          <RotateCcw className="w-4 h-4 text-white dark:text-black" />
-        </button>
       </div>
     );
   }
