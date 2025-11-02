@@ -8,12 +8,16 @@ import { YouTubeVideoConsent } from '../components/YouTubeVideoConsent';
 export const ResourcesPage: React.FC = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
-  const [resetConsent, setResetConsent] = useState<(() => void) | null>(null);
+  const resetConsentRef = React.useRef<(() => void) | null>(null);
 
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleResetConsentAvailable = (resetFn: () => void) => {
+    resetConsentRef.current = resetFn;
+  };
 
   const handleDownload = async () => {
     setIsDownloading(true);
@@ -86,7 +90,7 @@ export const ResourcesPage: React.FC = () => {
             <YouTubeVideoConsent
               videoId="ohZQlC_6yrs"
               title="TokeItReal Introduction Video"
-              onResetAvailable={setResetConsent}
+              onResetAvailable={handleResetConsentAvailable}
             />
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               Watch our introduction video to understand how TokeItReal is revolutionizing real estate investment through tokenization.
@@ -173,7 +177,7 @@ export const ResourcesPage: React.FC = () => {
               Need to change your cookie consent for YouTube videos?
             </p>
             <button
-              onClick={() => resetConsent?.()}
+              onClick={() => resetConsentRef.current?.()}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-light text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
               <RotateCcw className="w-4 h-4" />
