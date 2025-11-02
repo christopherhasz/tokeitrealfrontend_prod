@@ -4,6 +4,7 @@ import { HomePage } from "./pages/HomePage";
 import { ResourcesPage } from "./pages/ResourcesPage";
 import { AboutUsPage } from "./pages/AboutUsPage";
 import { ImpressumPage } from "./pages/ImpressumPage";
+import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 
 const App: React.FC = () => {
   const initialized = useRef(false);
@@ -51,6 +52,7 @@ const App: React.FC = () => {
             <Route path="/resources" element={<ResourcesPage />} />
             <Route path="/about" element={<AboutUsPage />} />
             <Route path="/impressum" element={<ImpressumPage />} />
+            <Route path="/datenschutz" element={<PrivacyPolicyPage />} />
           </Routes>
         </div>
       </Router>
