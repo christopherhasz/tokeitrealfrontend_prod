@@ -8,13 +8,15 @@ interface YouTubeVideoConsentProps {
   title?: string;
   className?: string;
   onResetAvailable?: (resetFn: () => void) => void;
+  language?: 'de' | 'en';
 }
 
 export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
   videoId,
   title = 'YouTube video player',
   className = '',
-  onResetAvailable
+  onResetAvailable,
+  language = 'en'
 }) => {
   const [hasConsent, setHasConsent] = useState<boolean | null>(null);
   const [showConsentDialog, setShowConsentDialog] = useState(false);
@@ -100,6 +102,31 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
     setShowConsentDialog(true);
   };
 
+  const content = {
+    en: {
+      consentTitle: 'Cookie Consent Required',
+      consentText: 'To watch this video, we need to load content from YouTube, which may set cookies on your device.',
+      declineButton: 'Decline',
+      acceptButton: 'Accept & Load Video',
+      policyVersion: 'Cookie Policy Version',
+      policyLink: 'View Privacy Policy / Datenschutzerklärung',
+      unavailableTitle: 'Video Content Unavailable',
+      unavailableText: 'This video requires cookie consent to load. Click below to review and accept.',
+      loadButton: 'Load Video'
+    },
+    de: {
+      consentTitle: 'Cookie-Einwilligung erforderlich',
+      consentText: 'Um dieses Video anzusehen, müssen wir Inhalte von YouTube laden, die möglicherweise Cookies auf Ihrem Gerät setzen.',
+      declineButton: 'Ablehnen',
+      acceptButton: 'Akzeptieren & Video laden',
+      policyVersion: 'Cookie-Richtlinie Version',
+      policyLink: 'Datenschutzerklärung ansehen',
+      unavailableTitle: 'Videoinhalt nicht verfügbar',
+      unavailableText: 'Dieses Video erfordert eine Cookie-Einwilligung zum Laden. Klicken Sie unten, um zu prüfen und zu akzeptieren.',
+      loadButton: 'Video laden'
+    }
+  };
+
   if (hasConsent === true) {
     return (
       <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
@@ -133,11 +160,11 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
               </div>
 
               <h3 className="text-base md:text-xl font-light text-gray-900 dark:text-gray-100 mb-1.5 md:mb-2 text-center">
-                Cookie Consent Required
+                {content[language].consentTitle}
               </h3>
 
               <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2 md:mb-3 text-center leading-relaxed">
-                To watch this video, we need to load content from YouTube, which may set cookies on your device.
+                {content[language].consentText}
               </p>
 
               <div className="flex flex-row gap-1.5 md:gap-2">
@@ -145,25 +172,25 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
                   onClick={handleDecline}
                   className="flex-1 px-2 md:px-3 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-light text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
-                  Decline
+                  {content[language].declineButton}
                 </button>
                 <button
                   onClick={handleAccept}
                   className="flex-1 px-2 md:px-3 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-light text-white dark:text-black bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
-                  Accept & Load Video
+                  {content[language].acceptButton}
                 </button>
               </div>
 
               <div className="mt-2 md:mt-3 pt-2 md:pt-3 border-t border-gray-200 dark:border-gray-700 text-center space-y-1">
                 <p className="text-xs text-gray-500 dark:text-gray-500">
-                  Cookie Policy Version {CONSENT_POLICY_VERSION}
+                  {content[language].policyVersion} {CONSENT_POLICY_VERSION}
                 </p>
                 <Link
                   to="/datenschutz"
                   className="text-xs text-blue-600 dark:text-blue-400 hover:underline inline-block"
                 >
-                  View Privacy Policy / Datenschutzerklärung
+                  {content[language].policyLink}
                 </Link>
               </div>
             </div>
@@ -175,11 +202,11 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
             </div>
 
             <h3 className="text-xl font-light text-gray-700 dark:text-gray-300 mb-3">
-              Video Content Unavailable
+              {content[language].unavailableTitle}
             </h3>
 
             <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-sm">
-              This video requires cookie consent to load. Click below to review and accept.
+              {content[language].unavailableText}
             </p>
 
             <button
@@ -187,7 +214,7 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
               className="px-8 py-3 rounded-lg font-light text-white dark:text-black bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center space-x-2"
             >
               <Cookie className="w-5 h-5" />
-              <span>Load Video</span>
+              <span>{content[language].loadButton}</span>
             </button>
           </div>
         )}

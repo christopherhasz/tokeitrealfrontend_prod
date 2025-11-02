@@ -155,6 +155,7 @@ export const ResourcesPage: React.FC = () => {
               videoId="ohZQlC_6yrs"
               title="TokeItReal Introduction Video"
               onResetAvailable={handleResetConsentAvailable}
+              language={language}
             />
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               {content[language].videoDescription}
