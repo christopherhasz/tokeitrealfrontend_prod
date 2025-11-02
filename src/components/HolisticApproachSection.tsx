@@ -75,7 +75,7 @@ export const HolisticApproachSection: React.FC<HolisticApproachSectionProps> = (
         },
         {
           icon: BarChart3,
-          title: 'Plattform-Listung',
+          title: 'Plattform Listung',
           summary: 'Präsentation von Immobilien auf unserer digitalen Plattform mit Mindestinvestition von 1 €',
           descriptionStart: 'Die ausgewählte Immobilie wird auf der ',
           boldText1: 'digitalen Plattform',
