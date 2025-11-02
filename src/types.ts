@@ -3,6 +3,12 @@ export interface NewsletterSubscriber {
   timestamp: string;
 }
 
+export interface ConsentData {
+  policyVersion: string;
+  accepted: boolean;
+  timestamp: string;
+}
+
 export interface VentureContact {
   name: string;
   email: string;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Cookie, Play, Shield, RotateCcw } from 'lucide-react';
+import { ConsentData } from '../types';
 
 interface YouTubeVideoConsentProps {
   videoId: string;
@@ -17,6 +18,7 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
   const [hasConsent, setHasConsent] = useState<boolean | null>(null);
   const [showConsentDialog, setShowConsentDialog] = useState(false);
   const STORAGE_KEY = 'tokeitreal_youtube_consent';
+  const CONSENT_POLICY_VERSION = '1.0.0';
 
   const handleReset = useCallback(() => {
     try {
@@ -33,8 +35,14 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
-          const consent = JSON.parse(stored);
-          setHasConsent(consent.accepted);
+          const consent: ConsentData = JSON.parse(stored);
+          if (consent.policyVersion === CONSENT_POLICY_VERSION) {
+            setHasConsent(consent.accepted);
+          } else {
+            localStorage.removeItem(STORAGE_KEY);
+            setHasConsent(null);
+            setShowConsentDialog(true);
+          }
         } else {
           setShowConsentDialog(true);
         }
@@ -55,7 +63,8 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
 
   const handleAccept = () => {
     try {
-      const consentData = {
+      const consentData: ConsentData = {
+        policyVersion: CONSENT_POLICY_VERSION,
         accepted: true,
         timestamp: new Date().toISOString()
       };
@@ -71,7 +80,8 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
 
   const handleDecline = () => {
     try {
-      const consentData = {
+      const consentData: ConsentData = {
+        policyVersion: CONSENT_POLICY_VERSION,
         accepted: false,
         timestamp: new Date().toISOString()
       };
@@ -101,6 +111,8 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
+          sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
+          loading="lazy"
           allowFullScreen
         />
       </div>
@@ -147,6 +159,12 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
                 >
                   Accept & Load Video
                 </button>
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
+                <p className="text-xs text-gray-500 dark:text-gray-500">
+                  Cookie Policy Version {CONSENT_POLICY_VERSION}
+                </p>
               </div>
             </div>
           </div>
