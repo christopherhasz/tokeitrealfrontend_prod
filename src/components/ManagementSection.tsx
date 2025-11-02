@@ -6,44 +6,91 @@ interface ManagementSectionProps {
 }
 
 export const ManagementSection: React.FC<ManagementSectionProps> = ({ language = 'en' }) => {
-  const managementAspects = [
-    {
-      icon: Building2,
-      title: 'Property Maintenance',
-      description: 'Regular upkeep and preventive maintenance to preserve and enhance property value',
-      tasks: ['Building repairs', 'System upgrades', 'Preventive maintenance', 'Emergency services']
+  const content = {
+    en: {
+      managementAspects: [
+        {
+          icon: Building2,
+          title: 'Property Maintenance',
+          description: 'Regular upkeep and preventive maintenance to preserve and enhance property value',
+          tasks: ['Building repairs', 'System upgrades', 'Preventive maintenance', 'Emergency services']
+        },
+        {
+          icon: Users,
+          title: 'Tenant Relations',
+          description: 'Professional tenant management and support for optimal occupancy',
+          tasks: ['Tenant screening', 'Lease management', '24/7 support', 'Conflict resolution']
+        },
+        {
+          icon: Receipt,
+          title: 'Financial Management',
+          description: 'Comprehensive financial oversight and transparent reporting',
+          tasks: ['Rent collection', 'Expense tracking', 'Budget planning', 'Financial reporting']
+        }
+      ],
+      benefits: [
+        {
+          icon: BarChart3,
+          title: '100% Net Rental Income',
+          description: 'Receive your full share of rental income after operational costs'
+        },
+        {
+          icon: Shield,
+          title: 'Professional Oversight',
+          description: 'Expert team handling all aspects of property management'
+        },
+        {
+          icon: Wrench,
+          title: 'Maintenance Coverage',
+          description: 'All necessary repairs and upgrades professionally managed'
+        }
+      ],
+      benefitsTitle: 'Investor Benefits'
     },
-    {
-      icon: Users,
-      title: 'Tenant Relations',
-      description: 'Professional tenant management and support for optimal occupancy',
-      tasks: ['Tenant screening', 'Lease management', '24/7 support', 'Conflict resolution']
-    },
-    {
-      icon: Receipt,
-      title: 'Financial Management',
-      description: 'Comprehensive financial oversight and transparent reporting',
-      tasks: ['Rent collection', 'Expense tracking', 'Budget planning', 'Financial reporting']
+    de: {
+      managementAspects: [
+        {
+          icon: Building2,
+          title: 'Immobilienwartung',
+          description: 'Regelmäßige Instandhaltung und vorbeugende Wartung zur Werterhaltung und Wertsteigerung',
+          tasks: ['Gebäudereparaturen', 'Systemupgrades', 'Vorbeugende Wartung', 'Notdienste']
+        },
+        {
+          icon: Users,
+          title: 'Mieterbeziehungen',
+          description: 'Professionelles Mietermanagement und Support für optimale Auslastung',
+          tasks: ['Mieterprüfung', 'Mietverwaltung', '24/7 Support', 'Konfliktlösung']
+        },
+        {
+          icon: Receipt,
+          title: 'Finanzverwaltung',
+          description: 'Umfassende Finanzaufsicht und transparente Berichterstattung',
+          tasks: ['Mieteinzug', 'Ausgabenverfolgung', 'Budgetplanung', 'Finanzberichterstattung']
+        }
+      ],
+      benefits: [
+        {
+          icon: BarChart3,
+          title: '100% Nettomieteinnahmen',
+          description: 'Erhalten Sie Ihren vollen Anteil der Mieteinnahmen nach Betriebskosten'
+        },
+        {
+          icon: Shield,
+          title: 'Professionelle Aufsicht',
+          description: 'Expertenteam kümmert sich um alle Aspekte der Immobilienverwaltung'
+        },
+        {
+          icon: Wrench,
+          title: 'Wartungsabdeckung',
+          description: 'Alle notwendigen Reparaturen und Upgrades werden professionell verwaltet'
+        }
+      ],
+      benefitsTitle: 'Investorenvorteile'
     }
-  ];
+  };
 
-  const benefits = [
-    {
-      icon: BarChart3,
-      title: '100% Net Rental Income',
-      description: 'Receive your full share of rental income after operational costs'
-    },
-    {
-      icon: Shield,
-      title: 'Professional Oversight',
-      description: 'Expert team handling all aspects of property management'
-    },
-    {
-      icon: Wrench,
-      title: 'Maintenance Coverage',
-      description: 'All necessary repairs and upgrades professionally managed'
-    }
-  ];
+  const managementAspects = content[language].managementAspects;
+  const benefits = content[language].benefits;
 
   return (
     <div className="bg-white dark:bg-gray-900 py-24">
@@ -95,7 +142,7 @@ export const ManagementSection: React.FC<ManagementSectionProps> = ({ language =
         {/* Investor Benefits */}
         <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8 md:p-12">
           <h3 className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100 mb-8 text-center">
-            Investor Benefits
+            {content[language].benefitsTitle}
           </h3>
           <div className="grid md:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (

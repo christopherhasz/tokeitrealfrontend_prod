@@ -18,6 +18,31 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ language =
   const primaryColor = '#000000';
   const secondaryColor = 'rgba(0, 0, 0, 0.5)';
 
+  const content = {
+    en: {
+      realEstateMarket: 'Real Estate Market',
+      digitalAssetsMarket: 'Digital Assets Market',
+      marketSize: 'Market Size in Europe',
+      transactionVolume: 'Transaction Volume',
+      onlyPercent: 'Only 0.13% of market size',
+      percentOfSize: '180% of market size',
+      opportunityTitle: 'The Opportunity',
+      opportunityText: 'By digitizing real estate through tokenization, we can dramatically increase market liquidity and transaction volume, potentially unlocking trillions in value.',
+      potential: '100x Potential'
+    },
+    de: {
+      realEstateMarket: 'Immobilienmarkt',
+      digitalAssetsMarket: 'Markt für digitale Vermögenswerte',
+      marketSize: 'Marktgröße in Europa',
+      transactionVolume: 'Transaktionsvolumen',
+      onlyPercent: 'Nur 0,13% der Marktgröße',
+      percentOfSize: '180% der Marktgröße',
+      opportunityTitle: 'Die Chance',
+      opportunityText: 'Durch die Digitalisierung von Immobilien durch Tokenisierung können wir die Marktliquidität und das Transaktionsvolumen drastisch erhöhen und möglicherweise Billionen an Wert freisetzen.',
+      potential: '100-faches Potenzial'
+    }
+  };
+
   return (
     <div className="bg-white dark:bg-gray-900 py-16 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,17 +61,17 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ language =
           <div className="grid md:grid-cols-2 gap-6 md:gap-12 mb-8 md:mb-16">
             {/* Real Estate Market */}
             <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 md:p-8 shadow-lg">
-              <h3 className="text-xl md:text-2xl font-light text-gray-900 dark:text-gray-100 mb-4 md:mb-8">Real Estate Market</h3>
+              <h3 className="text-xl md:text-2xl font-light text-gray-900 dark:text-gray-100 mb-4 md:mb-8">{content[language].realEstateMarket}</h3>
               <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 md:gap-8">
                 <div className="w-full md:w-auto space-y-4 md:space-y-8">
                   <div>
-                    <p className="text-xs md:text-sm mb-1 md:mb-2" style={{ color: primaryColor }}>Market Size in Europe<sup>1</sup></p>
+                    <p className="text-xs md:text-sm mb-1 md:mb-2" style={{ color: primaryColor }}>{content[language].marketSize}<sup>1</sup></p>
                     <p className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100">€164.84T</p>
                   </div>
                   <div>
-                    <p className="text-xs md:text-sm mb-1 md:mb-2" style={{ color: secondaryColor }}>Transaction Volume<sup>2</sup></p>
+                    <p className="text-xs md:text-sm mb-1 md:mb-2" style={{ color: secondaryColor }}>{content[language].transactionVolume}<sup>2</sup></p>
                     <p className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100">€219B</p>
-                    <p className="text-xs md:text-sm text-red-600 dark:text-red-500 mt-1 md:mt-2">Only 0.13% of market size</p>
+                    <p className="text-xs md:text-sm text-red-600 dark:text-red-500 mt-1 md:mt-2">{content[language].onlyPercent}</p>
                   </div>
                 </div>
                 
@@ -63,17 +88,17 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ language =
 
             {/* Digital Assets Market */}
             <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 md:p-8 shadow-lg">
-              <h3 className="text-xl md:text-2xl font-light text-gray-900 dark:text-gray-100 mb-4 md:mb-8">Digital Assets Market</h3>
+              <h3 className="text-xl md:text-2xl font-light text-gray-900 dark:text-gray-100 mb-4 md:mb-8">{content[language].digitalAssetsMarket}</h3>
               <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 md:gap-8">
                 <div className="w-full md:w-auto space-y-4 md:space-y-8">
                   <div>
-                    <p className="text-xs md:text-sm mb-1 md:mb-2" style={{ color: primaryColor }}>Market Size in Europe<sup>3</sup></p>
+                    <p className="text-xs md:text-sm mb-1 md:mb-2" style={{ color: primaryColor }}>{content[language].marketSize}<sup>3</sup></p>
                     <p className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100">€990B</p>
                   </div>
                   <div>
-                    <p className="text-xs md:text-sm mb-1 md:mb-2" style={{ color: secondaryColor }}>Transaction Volume<sup>4</sup></p>
+                    <p className="text-xs md:text-sm mb-1 md:mb-2" style={{ color: secondaryColor }}>{content[language].transactionVolume}<sup>4</sup></p>
                     <p className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100">€1.78T</p>
-                    <p className="text-xs md:text-sm text-green-600 dark:text-green-500 mt-1 md:mt-2">180% of market size</p>
+                    <p className="text-xs md:text-sm text-green-600 dark:text-green-500 mt-1 md:mt-2">{content[language].percentOfSize}</p>
                   </div>
                 </div>
                 
@@ -93,14 +118,14 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ language =
           <div className="bg-gray-900 dark:bg-black text-white rounded-xl p-6 md:p-12 mb-6 md:mb-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-8">
               <div className="space-y-2 md:space-y-4">
-                <h3 className="text-2xl md:text-3xl font-light">The Opportunity</h3>
+                <h3 className="text-2xl md:text-3xl font-light">{content[language].opportunityTitle}</h3>
                 <p className="text-base md:text-lg text-gray-300">
-                  By digitizing real estate through tokenization, we can dramatically increase market liquidity and transaction volume, potentially unlocking trillions in value.
+                  {content[language].opportunityText}
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-1 md:space-y-2">
                 <TrendingUp className="w-12 h-12 md:w-16 md:h-16 text-green-400" />
-                <p className="text-lg md:text-xl font-light text-green-400">100x Potential</p>
+                <p className="text-lg md:text-xl font-light text-green-400">{content[language].potential}</p>
               </div>
             </div>
           </div>

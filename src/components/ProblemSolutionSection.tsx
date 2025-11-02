@@ -8,6 +8,53 @@ interface ProblemSolutionSectionProps {
 export const ProblemSolutionSection: React.FC<ProblemSolutionSectionProps> = ({ language = 'en' }) => {
   const problemsRef = useRef<HTMLDivElement>(null);
 
+  const content = {
+    en: {
+      problems: [
+        'Reserved for professionals and wealthy investors',
+        'High entry barriers and transaction costs',
+        'Illiquid assets with complex management needs'
+      ],
+      solutionTitle: "TokeItReal's Solution",
+      solutions: [
+        {
+          title: 'Blockchain Technology',
+          description: 'Revolutionizing transaction processes with secure and transparent tokenization'
+        },
+        {
+          title: 'Professional Management',
+          description: 'Expert handling of property maintenance and tenant relations'
+        },
+        {
+          title: 'Accessible Investment',
+          description: 'Start investing with as little as €1 and trade tokens easily'
+        }
+      ]
+    },
+    de: {
+      problems: [
+        'Reserviert für Profis und wohlhabende Investoren',
+        'Hohe Eintrittsbarrieren und Transaktionskosten',
+        'Illiquide Vermögenswerte mit komplexen Verwaltungsanforderungen'
+      ],
+      solutionTitle: 'TokeItReals Lösung',
+      solutions: [
+        {
+          title: 'Blockchain-Technologie',
+          description: 'Revolutionierung von Transaktionsprozessen durch sichere und transparente Tokenisierung'
+        },
+        {
+          title: 'Professionelle Verwaltung',
+          description: 'Fachkundige Abwicklung von Immobilienwartung und Mieterbeziehungen'
+        },
+        {
+          title: 'Zugängliche Investition',
+          description: 'Beginnen Sie mit nur 1 € zu investieren und handeln Sie Token einfach'
+        }
+      ]
+    }
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -48,36 +95,30 @@ export const ProblemSolutionSection: React.FC<ProblemSolutionSectionProps> = ({ 
             <div className="space-y-6">
               <div className="problem-item transform transition-all duration-700 ease-out translate-y-20 opacity-0 flex items-start space-x-4">
                 <Lock className="w-6 h-6 text-red-600 dark:text-red-500 mt-1" />
-                <p className="text-lg text-gray-600 dark:text-gray-400">Reserved for professionals and wealthy investors</p>
+                <p className="text-lg text-gray-600 dark:text-gray-400">{content[language].problems[0]}</p>
               </div>
               <div className="problem-item transform transition-all duration-700 ease-out translate-y-20 opacity-0 flex items-start space-x-4">
                 <Coins className="w-6 h-6 text-red-600 dark:text-red-500 mt-1" />
-                <p className="text-lg text-gray-600 dark:text-gray-400">High entry barriers and transaction costs</p>
+                <p className="text-lg text-gray-600 dark:text-gray-400">{content[language].problems[1]}</p>
               </div>
               <div className="problem-item transform transition-all duration-700 ease-out translate-y-20 opacity-0 flex items-start space-x-4">
                 <Building className="w-6 h-6 text-red-600 dark:text-red-500 mt-1" />
-                <p className="text-lg text-gray-600 dark:text-gray-400">Illiquid assets with complex management needs</p>
+                <p className="text-lg text-gray-600 dark:text-gray-400">{content[language].problems[2]}</p>
               </div>
             </div>
           </div>
 
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 p-6 md:p-12 rounded-2xl shadow-lg">
             <h3 className="text-2xl md:text-3xl font-light text-gray-900 dark:text-gray-100 mb-4 md:mb-6">
-              TokeItReal's Solution
+              {content[language].solutionTitle}
             </h3>
             <div className="space-y-3 md:space-y-6">
-              <div className="bg-white dark:bg-gray-900 p-4 md:p-6 rounded-xl shadow-sm">
-                <h4 className="text-lg md:text-xl font-medium text-gray-900 dark:text-gray-100 mb-1 md:mb-2">Blockchain Technology</h4>
-                <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Revolutionizing transaction processes with secure and transparent tokenization</p>
-              </div>
-              <div className="bg-white dark:bg-gray-900 p-4 md:p-6 rounded-xl shadow-sm">
-                <h4 className="text-lg md:text-xl font-medium text-gray-900 dark:text-gray-100 mb-1 md:mb-2">Professional Management</h4>
-                <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Expert handling of property maintenance and tenant relations</p>
-              </div>
-              <div className="bg-white dark:bg-gray-900 p-4 md:p-6 rounded-xl shadow-sm">
-                <h4 className="text-lg md:text-xl font-medium text-gray-900 dark:text-gray-100 mb-1 md:mb-2">Accessible Investment</h4>
-                <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Start investing with as little as €1 and trade tokens easily</p>
-              </div>
+              {content[language].solutions.map((solution, index) => (
+                <div key={index} className="bg-white dark:bg-gray-900 p-4 md:p-6 rounded-xl shadow-sm">
+                  <h4 className="text-lg md:text-xl font-medium text-gray-900 dark:text-gray-100 mb-1 md:mb-2">{solution.title}</h4>
+                  <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">{solution.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

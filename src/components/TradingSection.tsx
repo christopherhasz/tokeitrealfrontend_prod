@@ -25,28 +25,58 @@ export const TradingSection: React.FC<TradingSectionProps> = ({ language = 'en' 
     { month: 'Dec', price: 135 },
   ];
 
-  const features = [
-    {
-      icon: Building2,
-      title: 'Property Representation',
-      description: 'Each property is represented with comprehensive details including location, financials, and performance metrics.',
+  const content = {
+    en: {
+      features: [
+        {
+          icon: Building2,
+          title: 'Property Representation',
+          description: 'Each property is represented with comprehensive details including location, financials, and performance metrics.',
+        },
+        {
+          icon: BarChart3,
+          title: 'Market-Driven Pricing',
+          description: 'Token prices are determined by market supply and demand, reflecting real property value and potential.',
+        },
+        {
+          icon: FileText,
+          title: 'Regular Reporting',
+          description: 'Detailed monthly reports on property performance, maintenance, and market conditions keep investors informed.',
+        },
+        {
+          icon: ArrowRightLeft,
+          title: 'Instant Trading',
+          description: 'Trade your tokens 24/7 on our regulated secondary market platform with real-time execution.',
+        },
+      ]
     },
-    {
-      icon: BarChart3,
-      title: 'Market-Driven Pricing',
-      description: 'Token prices are determined by market supply and demand, reflecting real property value and potential.',
-    },
-    {
-      icon: FileText,
-      title: 'Regular Reporting',
-      description: 'Detailed monthly reports on property performance, maintenance, and market conditions keep investors informed.',
-    },
-    {
-      icon: ArrowRightLeft,
-      title: 'Instant Trading',
-      description: 'Trade your tokens 24/7 on our regulated secondary market platform with real-time execution.',
-    },
-  ];
+    de: {
+      features: [
+        {
+          icon: Building2,
+          title: 'Immobiliendarstellung',
+          description: 'Jede Immobilie wird mit umfassenden Details dargestellt, einschließlich Standort, Finanzen und Leistungskennzahlen.',
+        },
+        {
+          icon: BarChart3,
+          title: 'Marktgesteuerte Preisbildung',
+          description: 'Token-Preise werden durch Marktangebot und -nachfrage bestimmt und spiegeln den realen Immobilienwert und das Potenzial wider.',
+        },
+        {
+          icon: FileText,
+          title: 'Regelmäßige Berichterstattung',
+          description: 'Detaillierte monatliche Berichte über Immobilienleistung, Wartung und Marktbedingungen halten Investoren auf dem Laufenden.',
+        },
+        {
+          icon: ArrowRightLeft,
+          title: 'Sofortiger Handel',
+          description: 'Handeln Sie Ihre Token 24/7 auf unserer regulierten Sekundärmarktplattform mit Echtzeitausführung.',
+        },
+      ]
+    }
+  };
+
+  const features = content[language].features;
 
   // Prepare data for plotly.js
   const plotlyData = [
