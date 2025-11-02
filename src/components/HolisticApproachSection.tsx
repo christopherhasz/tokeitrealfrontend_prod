@@ -67,7 +67,7 @@ export const HolisticApproachSection: React.FC<HolisticApproachSectionProps> = (
       steps: [
         {
           icon: Search,
-          title: 'Immobilienidentifizierung',
+          title: 'Immobilien-auswahl',
           summary: 'Auswahl ertragsstarker Immobilien durch gründliche Due Diligence',
           description: 'Vor Beginn der Tokenisierung ',
           boldText: 'wählt TokeItReal ertragsstarke Immobilien aus',
