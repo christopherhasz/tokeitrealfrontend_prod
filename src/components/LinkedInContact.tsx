@@ -23,7 +23,7 @@ export const LinkedInContact: React.FC = () => {
               className="inline-flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-300"
             >
               <Shield className="w-4 h-4" />
-              <span className="text-sm">Datenschutz</span>
+              <span className="text-sm">Datenschutzerklärung / Privacy Policy</span>
             </button>
           </div>
 
