@@ -17,10 +17,10 @@ export const ImpressumPage: React.FC = () => {
         name: 'TokeItReal GbR',
         representatives: 'vertreten durch die Gesellschafter',
         founders: 'Christopher Haß & Felix Behnke',
-        address: 'Waldstraße 21',
-        city: '15345 Altlandsberg',
+        address: '[Straße, Hausnummer]',
+        city: '[PLZ, Ort – voraussichtlich Berlin]',
         country: 'Deutschland',
-        email: 'info@tokeitreal.com',
+        email: 'kontakt@tokeitreal.com',
         web: 'tokeitreal.com'
       },
       representationTitle: 'Vertretung',
@@ -38,14 +38,8 @@ export const ImpressumPage: React.FC = () => {
       ],
       disclaimerTitle: 'Haftungsausschluss',
       disclaimerText: [
-        'Die Website tokeitreal.com wird von der TokeItReal GbR, vertreten durch die Gesellschafter Christopher Haß und Felix Behnke, betrieben.',
-        'Die Gesellschaft befindet sich derzeit in der Entwicklungs- und Konzeptphase.',
-        'Die auf dieser Website bereitgestellten Informationen dienen ausschließlich der allgemeinen Darstellung des Projekts „TokeItReal" sowie der Vorstellung des zugrunde liegenden Konzepts zur Digitalisierung und Tokenisierung von Immobilienwerten.',
-        'Es werden derzeit keine Finanzdienstleistungen, keine Anlageberatung, keine Vermittlung von Finanzinstrumenten, keine Verwaltung von Vermögenswerten und keine Angebote zum Erwerb oder zur Veräußerung von Wertpapieren, Token oder sonstigen Vermögenswerten im Sinne des Kreditwesengesetzes (KWG), Wertpapierinstitutsgesetzes (WpIG), elektronischen Wertpapiergesetzes (eWpG) oder Wertpapierprospektgesetzes (WpPG) erbracht.',
-        'Alle auf dieser Website enthaltenen Beschreibungen, Darstellungen und Abbildungen sind unverbindlich und stellen weder eine rechtliche noch eine finanzielle Empfehlung oder Aufforderung zum Tätigwerden dar.',
-        'Sie dienen ausschließlich dem Informationszweck über die geplante Unternehmensentwicklung der TokeItReal GbR.',
-        'Die TokeItReal GbR übernimmt keine Gewähr für die Richtigkeit, Vollständigkeit oder Aktualität der bereitgestellten Informationen. Jegliche Haftung für Schäden materieller oder immaterieller Art, die durch die Nutzung oder Nichtnutzung der angebotenen Informationen entstehen, ist ausgeschlossen, soweit kein nachweislich vorsätzliches oder grob fahrlässiges Verschulden vorliegt.',
-        'Die Gesellschaft behält sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.'
+        'Die Inhalte dieser Website werden mit größter Sorgfalt erstellt. Eine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte wird jedoch nicht übernommen.',
+        'Die TokeItReal GbR haftet nicht für Schäden, die direkt oder indirekt aus der Nutzung der Website entstehen, es sei denn, diese beruhen auf Vorsatz oder grober Fahrlässigkeit.'
       ],
       copyrightTitle: 'Urheberrecht',
       copyrightText: [
@@ -68,10 +62,10 @@ export const ImpressumPage: React.FC = () => {
         name: 'TokeItReal GbR',
         representatives: 'represented by the partners',
         founders: 'Christopher Haß & Felix Behnke',
-        address: 'Waldstraße 21',
-        city: '15345 Altlandsberg',
+        address: '[Street, House Number]',
+        city: '[Postal Code, City – expected Berlin]',
         country: 'Germany',
-        email: 'info@tokeitreal.com',
+        email: 'kontakt@tokeitreal.com',
         web: 'tokeitreal.com'
       },
       representationTitle: 'Representation',
@@ -89,14 +83,8 @@ export const ImpressumPage: React.FC = () => {
       ],
       disclaimerTitle: 'Disclaimer',
       disclaimerText: [
-        'The website tokeitreal.com is operated by TokeItReal GbR, represented by the partners Christopher Haß and Felix Behnke.',
-        'The company is currently in the development and conceptual phase.',
-        'The information provided on this website serves exclusively for the general presentation of the "TokeItReal" project and the introduction of the underlying concept for the digitization and tokenization of real estate values.',
-        'Currently, no financial services, investment advice, brokerage of financial instruments, asset management, or offers for the acquisition or disposal of securities, tokens, or other assets within the meaning of the Banking Act (KWG), Securities Institute Act (WpIG), Electronic Securities Act (eWpG), or Securities Prospectus Act (WpPG) are provided.',
-        'All descriptions, representations, and illustrations contained on this website are non-binding and do not constitute legal or financial recommendations or calls to action.',
-        'They serve exclusively for informational purposes about the planned business development of TokeItReal GbR.',
-        'TokeItReal GbR assumes no responsibility for the accuracy, completeness, or timeliness of the information provided. Any liability for material or immaterial damages arising from the use or non-use of the information offered is excluded, unless there is demonstrable intentional or grossly negligent fault.',
-        'The company expressly reserves the right to change, supplement, delete parts of the pages or the entire offer without separate notice, or to discontinue publication temporarily or permanently.'
+        'The content of this website is created with the greatest care. However, no guarantee is given for the accuracy, completeness and timeliness of the content.',
+        'TokeItReal GbR is not liable for damages that arise directly or indirectly from the use of the website, unless they are based on intent or gross negligence.'
       ],
       copyrightTitle: 'Copyright',
       copyrightText: [
