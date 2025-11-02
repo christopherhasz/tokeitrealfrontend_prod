@@ -139,8 +139,8 @@ export const YouTubeVideoConsent: React.FC<YouTubeVideoConsentProps> = ({
                 To watch this video, we need to load content from YouTube, which may set cookies on your device.
               </p>
 
-              <div className="flex items-center gap-1.5 md:gap-2 mb-2 md:mb-3 p-1.5 md:p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <Shield className="w-3 h-3 md:w-4 md:h-4 text-gray-600 dark:text-gray-400 flex-shrink-0" />
+              <div className="hidden md:flex items-center gap-2 mb-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <Shield className="w-4 h-4 text-gray-600 dark:text-gray-400 flex-shrink-0" />
                 <p className="text-xs text-gray-600 dark:text-gray-400">
                   We use youtube-nocookie.com for enhanced privacy
                 </p>
